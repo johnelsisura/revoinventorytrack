@@ -694,6 +694,7 @@
       <a class="nav-item" onclick="showPage('distributions')" href="#"><i class="fas fa-share-alt"></i> Distributions</a>
     </nav>
     <div class="sidebar-footer">
+      <a class="nav-item" onclick="openEditProfile()" href="#"><i class="fas fa-user-edit"></i> Edit Profile</a>
       <a class="nav-item" onclick="signOut()" href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
     </div>
   </aside>
@@ -890,6 +891,9 @@
           <option value="Token">Token</option>
           <option value="Staff">Staff</option>
           <option value="VIP">VIP</option>
+          <option value="Ambassador">Ambassador</option>
+          <option value="Host">Host</option>
+          <option value="Artist">Artist</option>
           <option value="Other">Other</option>
         </select>
         <input type="date" id="dist-filter-from" onchange="renderDistributions()" placeholder="From" />
@@ -899,7 +903,7 @@
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Date</th><th>Item</th><th>Variant</th><th>Sponsor</th><th>Type</th><th>Qty Given</th><th>Given To / By</th><th>Remaining</th><th>Notes</th><th>Actions</th></tr></thead>
+          <thead><tr><th>Date</th><th>Movement</th><th>Item</th><th>Variant</th><th>Sponsor</th><th>Type</th><th>Qty</th><th>Given To / By</th><th>Remaining</th><th>Notes</th><th>Actions</th></tr></thead>
           <tbody id="distributions-tbody"></tbody>
         </table>
       </div>
@@ -939,6 +943,7 @@
         </div>
       </div>
       <div class="form-group"><label>Notes</label><textarea id="sp-notes" placeholder="Any additional notes…"></textarea></div>
+      <div class="form-group"><label>Assigned To (Team Member)</label><input type="text" id="sp-assigned-to" placeholder="e.g. Juan Dela Cruz — person managing this sponsor" /></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('add-sponsor-modal')">Cancel</button>
@@ -1019,6 +1024,25 @@
   </div>
 </div>
 
+<!-- EDIT PROFILE -->
+<div class="modal-overlay" id="edit-profile-modal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <div class="modal-title">Edit Profile</div>
+      <button class="modal-close" onclick="closeModal('edit-profile-modal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Display Name</label><input type="text" id="profile-name" placeholder="Your name" /></div>
+      <div class="form-group"><label>Email</label><input type="email" id="profile-email" placeholder="email@example.com" disabled style="background:#f8f5f2;color:var(--text-muted)" /></div>
+      <div class="form-group"><label>New Password (leave blank to keep current)</label><input type="password" id="profile-password" placeholder="Min 6 characters" /></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('edit-profile-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProfile()"><i class="fas fa-save"></i> Save Profile</button>
+    </div>
+  </div>
+</div>
+
 <!-- ADD DISTRIBUTION -->
 <div class="modal-overlay" id="add-distribution-modal">
   <div class="modal">
@@ -1031,6 +1055,15 @@
       <div class="form-row">
         <div class="form-group"><label>Date *</label><input type="date" id="dist-date" /></div>
         <div class="form-group">
+          <label>Movement *</label>
+          <select id="dist-movement">
+            <option value="out">OUT — Item Given Out</option>
+            <option value="in">IN — Item Returned</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
           <label>Distribution Type *</label>
           <select id="dist-type">
             <option value="Raffle">Raffle</option>
@@ -1038,22 +1071,23 @@
             <option value="Token">Token</option>
             <option value="Staff">Staff</option>
             <option value="VIP">VIP</option>
+            <option value="Ambassador">Ambassador</option>
+            <option value="Host">Host</option>
+            <option value="Artist">Artist</option>
             <option value="Other">Other</option>
           </select>
         </div>
+        <div class="form-group"><label>Item *</label><select id="dist-item" onchange="updateDistRemaining()"><option value="">Select Item…</option></select></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Item *</label><select id="dist-item" onchange="updateDistRemaining()"><option value="">Select Item…</option></select></div>
         <div class="form-group">
-          <label>Qty to Give *</label>
+          <label>Qty *</label>
           <input type="number" id="dist-qty" placeholder="0" min="1" oninput="updateDistRemaining()" />
           <div id="dist-remaining-hint" style="font-size:11px;color:var(--text-muted);margin-top:4px"></div>
         </div>
-      </div>
-      <div class="form-row">
         <div class="form-group"><label>Given To / By *</label><input type="text" id="dist-given-to" placeholder="e.g. Raffle winner, Committee name" /></div>
-        <div class="form-group"><label>Notes</label><input type="text" id="dist-notes" placeholder="Optional note…" /></div>
       </div>
+      <div class="form-group"><label>Notes</label><input type="text" id="dist-notes" placeholder="Optional note…" /></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('add-distribution-modal')">Cancel</button>
@@ -1312,6 +1346,7 @@ function renderSponsors() {
         <div class="progress-bar-wrap"><div class="progress-bar-fill ${received===expected&&expected>0?'complete':received>0?'partial':''}" style="width:${expected>0?Math.round(received/expected*100):0}%"></div></div>
       </div>
       <div class="sponsor-meta">
+        ${sp.assigned_to ? `<span><i class="fas fa-user-tag"></i>${sp.assigned_to}</span>` : ''}
         ${sp.contact_person ? `<span><i class="fas fa-user"></i>${sp.contact_person}</span>` : ''}
         ${sp.email ? `<span><i class="fas fa-envelope"></i>${sp.email}</span>` : ''}
         ${sp.contact_number ? `<span><i class="fas fa-phone"></i>${sp.contact_number}</span>` : ''}
@@ -1333,7 +1368,8 @@ function showSponsorDetail(id) {
     <div class="detail-item"><label>Contact Person</label><p>${sp.contact_person || '—'}</p></div>
     <div class="detail-item"><label>Contact Number</label><p>${sp.contact_number || '—'}</p></div>
     <div class="detail-item"><label>Email</label><p>${sp.email || '—'}</p></div>
-    <div class="detail-item"><label>Notes</label><p>${sp.notes || '—'}</p></div>
+    <div class="detail-item"><label>Assigned To</label><p>${sp.assigned_to ? `<strong style="color:var(--maroon)">${sp.assigned_to}</strong>` : '—'}</p></div>
+    <div class="detail-item col-span-2"><label>Notes</label><p>${sp.notes || '—'}</p></div>
   `;
 
   const spItems = state.items.filter(i => i.sponsor_id === id);
@@ -1383,6 +1419,7 @@ function editCurrentSponsor() {
   document.getElementById('sp-email').value = sp.email || '';
   document.getElementById('sp-tier').value = sp.tier || 'Gold';
   document.getElementById('sp-notes').value = sp.notes || '';
+  document.getElementById('sp-assigned-to').value = sp.assigned_to || '';
   document.getElementById('sponsor-modal-title').textContent = 'Edit Sponsor';
   openModal('add-sponsor-modal');
 }
@@ -1404,6 +1441,7 @@ async function saveSponsor() {
     email: document.getElementById('sp-email').value.trim(),
     tier: document.getElementById('sp-tier').value,
     notes: document.getElementById('sp-notes').value.trim(),
+    assigned_to: document.getElementById('sp-assigned-to').value.trim(),
   };
   if (!data.name || !data.company) { toast('Name and Company are required.', 'error'); return; }
   let res;
@@ -1422,7 +1460,7 @@ async function saveSponsor() {
 function resetSponsorForm() {
   document.getElementById('sponsor-edit-id').value = '';
   document.getElementById('sponsor-modal-title').textContent = 'Add Sponsor';
-  ['sp-name','sp-company','sp-contact-person','sp-contact-number','sp-email','sp-notes'].forEach(id => document.getElementById(id).value = '');
+  ['sp-name','sp-company','sp-contact-person','sp-contact-number','sp-email','sp-notes','sp-assigned-to'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('sp-tier').value = 'Gold';
 }
 
@@ -1679,7 +1717,10 @@ function populateDropdowns() {
     const cur = el.value;
     const isFilter = id === 'dist-filter-item';
     el.innerHTML = `<option value="">${isFilter ? 'All Items' : 'Select Item…'}</option>` +
-      state.items.map(i => `<option value="${i.id}" ${i.id === cur ? 'selected' : ''}>${i.name}${i.variant?' ('+i.variant+')':''} [${getItemRemaining(i.id)} left]</option>`).join('');
+      state.items.map(i => {
+        const rem = getItemRemaining(i.id);
+        return `<option value="${i.id}" ${i.id === cur ? 'selected' : ''}>${i.name}${i.variant?' ('+i.variant+')':''} [${rem} left]</option>`;
+      }).join('');
   });
 }
 
@@ -1711,6 +1752,9 @@ async function confirmAction() {
   } else if (type === 'transaction') {
     await sb.from('transactions').delete().eq('id', id);
     toast('Transaction deleted.', 'info');
+  } else if (type === 'distribution') {
+    await sb.from('distributions').delete().eq('id', id);
+    toast('Distribution deleted.', 'info');
   }
   state.pendingConfirm = null;
   await loadAll();
@@ -1740,6 +1784,218 @@ function handleSearch(q) {
 function closeSearch() {
   document.getElementById('search-results').style.display = 'none';
   document.getElementById('search-input').value = '';
+}
+
+// ──────────────────────────────────────────
+// DISTRIBUTIONS
+// ──────────────────────────────────────────
+function getItemRemaining(itemId) {
+  const received = state.transactions.filter(t => t.item_id === itemId).reduce((s, t) => s + (t.qty_received || 0), 0);
+  const givenOut = state.distributions.filter(d => d.item_id === itemId).reduce((s, d) => {
+    const qty = d.qty_given || 0;
+    return d.movement === 'in' ? s - qty : s + qty;
+  }, 0);
+  return received - givenOut;
+}
+
+function updateDistRemaining() {
+  const itemId = document.getElementById('dist-item').value;
+  const qty = parseInt(document.getElementById('dist-qty').value) || 0;
+  const hint = document.getElementById('dist-remaining-hint');
+  if (!itemId) { hint.textContent = ''; return; }
+  const rem = getItemRemaining(itemId);
+  hint.textContent = `${rem} units currently available`;
+  hint.style.color = (qty > rem) ? '#dc2626' : 'var(--text-muted)';
+}
+
+function renderDistributions() {
+  const itemFilter = document.getElementById('dist-filter-item')?.value || '';
+  const typeFilter = document.getElementById('dist-filter-type')?.value || '';
+  const dateFrom = document.getElementById('dist-filter-from')?.value || '';
+  const dateTo = document.getElementById('dist-filter-to')?.value || '';
+
+  let dists = [...state.distributions];
+  if (itemFilter) dists = dists.filter(d => d.item_id === itemFilter);
+  if (typeFilter) dists = dists.filter(d => d.dist_type === typeFilter);
+  if (dateFrom) dists = dists.filter(d => d.date_given >= dateFrom);
+  if (dateTo) dists = dists.filter(d => d.date_given <= dateTo);
+  dists.sort((a, b) => new Date(b.date_given) - new Date(a.date_given));
+
+  // Summary grid
+  const summaryGrid = document.getElementById('dist-summary-grid');
+  const totalOut = state.distributions.filter(d => d.movement !== 'in').reduce((s, d) => s + (d.qty_given || 0), 0);
+  const totalIn = state.distributions.filter(d => d.movement === 'in').reduce((s, d) => s + (d.qty_given || 0), 0);
+  const totalReceived = state.transactions.reduce((s, t) => s + (t.qty_received || 0), 0);
+  summaryGrid.innerHTML = `
+    <div class="stat-card green">
+      <div class="stat-icon"><i class="fas fa-cubes"></i></div>
+      <div class="stat-value">${totalReceived}</div>
+      <div class="stat-label">Total IN (Received)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-share-alt"></i></div>
+      <div class="stat-value">${totalOut}</div>
+      <div class="stat-label">Total OUT (Distributed)</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-icon"><i class="fas fa-undo"></i></div>
+      <div class="stat-value">${totalIn}</div>
+      <div class="stat-label">Total Returned</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-icon"><i class="fas fa-warehouse"></i></div>
+      <div class="stat-value">${totalReceived - totalOut + totalIn}</div>
+      <div class="stat-label">Net Stock Remaining</div>
+    </div>
+  `;
+
+  const tbody = document.getElementById('distributions-tbody');
+  if (dists.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="11"><div class="empty-state"><i class="fas fa-share-alt"></i><h3>No distributions yet</h3><p>Log your first distribution using "+ Log Distribution".</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = dists.map(d => {
+    const item = state.items.find(i => i.id === d.item_id);
+    const sp = state.sponsors.find(s => s.id === item?.sponsor_id);
+    const rem = getItemRemaining(d.item_id);
+    const isIn = d.movement === 'in';
+    const movBadge = isIn
+      ? `<span class="badge badge-complete"><i class="fas fa-arrow-down"></i> IN</span>`
+      : `<span class="badge badge-pending"><i class="fas fa-arrow-up"></i> OUT</span>`;
+    return `<tr>
+      <td>${formatDate(d.date_given)}</td>
+      <td>${movBadge}</td>
+      <td><strong>${item?.name || '—'}</strong></td>
+      <td>${item?.variant || '—'}</td>
+      <td>${sp?.name || '—'}</td>
+      <td><span class="badge" style="background:#f1f5f9;color:#334155">${d.dist_type || '—'}</span></td>
+      <td><strong>${d.qty_given}</strong></td>
+      <td>${d.given_to || '—'}</td>
+      <td>${rem}</td>
+      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${d.notes||''}">${d.notes || '—'}</td>
+      <td><div class="inline-actions">
+        <button class="btn btn-outline btn-sm" onclick="editDistribution('${d.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="confirmDeleteDist('${d.id}')"><i class="fas fa-trash"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function editDistribution(id) {
+  const d = state.distributions.find(x => x.id === id);
+  if (!d) return;
+  document.getElementById('dist-edit-id').value = d.id;
+  document.getElementById('dist-date').value = d.date_given;
+  document.getElementById('dist-movement').value = d.movement || 'out';
+  document.getElementById('dist-type').value = d.dist_type || 'Other';
+  populateDropdowns();
+  document.getElementById('dist-item').value = d.item_id || '';
+  document.getElementById('dist-qty').value = d.qty_given;
+  document.getElementById('dist-given-to').value = d.given_to || '';
+  document.getElementById('dist-notes').value = d.notes || '';
+  document.getElementById('dist-modal-title').textContent = 'Edit Distribution';
+  updateDistRemaining();
+  openModal('add-distribution-modal');
+}
+
+function confirmDeleteDist(id) {
+  state.pendingConfirm = { type: 'distribution', id };
+  document.getElementById('confirm-title').textContent = 'Delete Distribution';
+  document.getElementById('confirm-text').textContent = 'Delete this distribution record? Stock counts will be adjusted.';
+  openModal('confirm-modal');
+}
+
+async function saveDistribution() {
+  const editId = document.getElementById('dist-edit-id').value;
+  const data = {
+    date_given: document.getElementById('dist-date').value,
+    movement: document.getElementById('dist-movement').value || 'out',
+    dist_type: document.getElementById('dist-type').value,
+    item_id: document.getElementById('dist-item').value || null,
+    qty_given: parseInt(document.getElementById('dist-qty').value) || 0,
+    given_to: document.getElementById('dist-given-to').value.trim(),
+    notes: document.getElementById('dist-notes').value.trim(),
+  };
+  if (!data.date_given || !data.item_id || data.qty_given <= 0 || !data.given_to) {
+    toast('Please fill in all required fields.', 'error'); return;
+  }
+  // Check stock for OUT movements
+  if (data.movement === 'out') {
+    const rem = getItemRemaining(data.item_id);
+    const editQty = editId ? (state.distributions.find(d => d.id === editId)?.qty_given || 0) : 0;
+    if (data.qty_given > rem + editQty) {
+      toast(`Not enough stock! Only ${rem + editQty} units available.`, 'error'); return;
+    }
+  }
+  let res;
+  if (editId) {
+    res = await sb.from('distributions').update(data).eq('id', editId);
+  } else {
+    res = await sb.from('distributions').insert(data);
+  }
+  if (res.error) { toast('Error: ' + res.error.message, 'error'); return; }
+  toast(editId ? 'Distribution updated!' : 'Distribution logged!', 'success');
+  closeModal('add-distribution-modal');
+  resetDistForm();
+  await loadAll();
+}
+
+function resetDistForm() {
+  document.getElementById('dist-edit-id').value = '';
+  document.getElementById('dist-modal-title').textContent = 'Log Distribution';
+  ['dist-date','dist-qty','dist-given-to','dist-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('dist-movement').value = 'out';
+  document.getElementById('dist-type').value = 'Raffle';
+  document.getElementById('dist-item').innerHTML = '<option value="">Select Item…</option>';
+  document.getElementById('dist-remaining-hint').textContent = '';
+}
+
+function clearDistFilters() {
+  ['dist-filter-item','dist-filter-type','dist-filter-from','dist-filter-to'].forEach(id => document.getElementById(id).value = '');
+  renderDistributions();
+}
+
+function exportDistributionsCSV() {
+  const headers = ['Date','Movement','Type','Item','Variant','Sponsor','Qty','Given To','Remaining','Notes'];
+  const rows = state.distributions.map(d => {
+    const item = state.items.find(i => i.id === d.item_id);
+    const sp = state.sponsors.find(s => s.id === item?.sponsor_id);
+    return [d.date_given, d.movement||'out', d.dist_type||'', item?.name||'', item?.variant||'', sp?.name||'', d.qty_given, d.given_to||'', getItemRemaining(d.item_id), d.notes||''];
+  });
+  const csv = [headers, ...rows].map(r => r.map(c => `"${(c||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'PUP_REVO_2026_Distributions.csv'; a.click();
+  toast('CSV exported!', 'success');
+}
+
+// ──────────────────────────────────────────
+// EDIT PROFILE
+// ──────────────────────────────────────────
+function openEditProfile() {
+  const displayName = state.user?.user_metadata?.display_name || '';
+  const email = state.user?.email || '';
+  document.getElementById('profile-name').value = displayName;
+  document.getElementById('profile-email').value = email;
+  document.getElementById('profile-password').value = '';
+  openModal('edit-profile-modal');
+}
+
+async function saveProfile() {
+  const name = document.getElementById('profile-name').value.trim();
+  const pass = document.getElementById('profile-password').value;
+  if (!name) { toast('Display name is required.', 'error'); return; }
+  const updates = { data: { display_name: name } };
+  if (pass) {
+    if (pass.length < 6) { toast('Password must be at least 6 characters.', 'error'); return; }
+    updates.password = pass;
+  }
+  const { error } = await sb.auth.updateUser(updates);
+  if (error) { toast('Error: ' + error.message, 'error'); return; }
+  state.user.user_metadata = { ...state.user.user_metadata, display_name: name };
+  document.getElementById('sidebar-username').textContent = name;
+  document.getElementById('sidebar-avatar').textContent = name.charAt(0).toUpperCase();
+  toast('Profile updated!', 'success');
+  closeModal('edit-profile-modal');
 }
 
 document.addEventListener('click', e => {
@@ -1812,6 +2068,10 @@ function openModal(id) {
   if (id === 'add-transaction-modal') {
     populateDropdowns();
     if (!document.getElementById('tx-date').value) document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
+  }
+  if (id === 'add-distribution-modal') {
+    populateDropdowns();
+    if (!document.getElementById('dist-date').value) document.getElementById('dist-date').value = new Date().toISOString().split('T')[0];
   }
   if (id === 'add-sponsor-modal' && !document.getElementById('sponsor-edit-id').value) resetSponsorForm();
 }
