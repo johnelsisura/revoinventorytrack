@@ -1164,12 +1164,15 @@ async function signUp() {
 
 async function signOut() {
   await sb.auth.signOut();
-  state.user = null;
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('auth-screen').style.display = 'flex';
 }
 
 sb.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'SIGNED_OUT') {
+    state.user = null;
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('auth-screen').style.display = 'flex';
+    return;
+  }
   if (session?.user) {
     state.user = session.user;
     document.getElementById('auth-screen').style.display = 'none';
@@ -1178,8 +1181,12 @@ sb.auth.onAuthStateChange(async (event, session) => {
     document.getElementById('sidebar-username').textContent = displayName;
     document.getElementById('sidebar-avatar').textContent = displayName.charAt(0).toUpperCase();
     document.getElementById('tx-received-by').value = displayName;
-    await loadAll();
-    setupRealtime();
+    try {
+      await loadAll();
+      setupRealtime();
+    } catch(e) {
+      console.error('Startup error:', e);
+    }
   }
 });
 
@@ -1187,30 +1194,47 @@ sb.auth.onAuthStateChange(async (event, session) => {
 // DATA LOADING
 // ──────────────────────────────────────────
 async function loadAll() {
-  const [s, it, tx, dist] = await Promise.all([
-    sb.from('sponsors').select('*').order('created_at', { ascending: false }),
-    sb.from('items').select('*').order('created_at', { ascending: false }),
-    sb.from('transactions').select('*').order('date_received', { ascending: false }),
-    sb.from('distributions').select('*').order('date_given', { ascending: false }),
-  ]);
-  if (s.error) console.error(s.error);
-  if (it.error) console.error(it.error);
-  if (tx.error) console.error(tx.error);
-  if (dist.error) console.error('distributions:', dist.error);
-  state.sponsors = s.data || [];
-  state.items = it.data || [];
-  state.transactions = tx.data || [];
-  state.distributions = dist.data || [];
+  try {
+    const [s, it, tx] = await Promise.all([
+      sb.from('sponsors').select('*').order('created_at', { ascending: false }),
+      sb.from('items').select('*').order('created_at', { ascending: false }),
+      sb.from('transactions').select('*').order('date_received', { ascending: false }),
+    ]);
+    if (s.error) console.error('sponsors error:', s.error);
+    if (it.error) console.error('items error:', it.error);
+    if (tx.error) console.error('transactions error:', tx.error);
+    state.sponsors = s.data || [];
+    state.items = it.data || [];
+    state.transactions = tx.data || [];
+  } catch(e) {
+    console.error('loadAll main queries failed:', e);
+    state.sponsors = state.sponsors || [];
+    state.items = state.items || [];
+    state.transactions = state.transactions || [];
+  }
+
+  // Load distributions separately — gracefully handle missing table or columns
+  try {
+    const dist = await sb.from('distributions').select('*').order('date_given', { ascending: false });
+    if (dist.error) {
+      console.warn('distributions table not ready yet:', dist.error.message);
+      state.distributions = [];
+    } else {
+      state.distributions = dist.data || [];
+    }
+  } catch(e) {
+    console.warn('distributions load failed:', e);
+    state.distributions = [];
+  }
+
   renderAll();
 }
 
 function renderAll() {
-  renderDashboard();
-  renderSponsors();
-  renderItems();
-  renderTransactions();
-  renderDistributions();
-  populateDropdowns();
+  const fns = [renderDashboard, renderSponsors, renderItems, renderTransactions, renderDistributions, populateDropdowns];
+  fns.forEach(fn => {
+    try { fn(); } catch(e) { console.error(fn.name + ' crashed:', e); }
+  });
 }
 
 // ──────────────────────────────────────────
@@ -1933,7 +1957,15 @@ async function saveDistribution() {
   } else {
     res = await sb.from('distributions').insert(data);
   }
-  if (res.error) { toast('Error: ' + res.error.message, 'error'); return; }
+  if (res.error) {
+    if (res.error.code === '42P01' || res.error.message?.includes('does not exist')) {
+      toast('⚠️ distributions table missing in Supabase. See console for setup SQL.', 'error');
+      console.error('Run this SQL in Supabase:\nCREATE TABLE IF NOT EXISTS distributions (\n  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),\n  date_given date NOT NULL,\n  movement text DEFAULT \'out\',\n  dist_type text,\n  item_id uuid REFERENCES items(id),\n  qty_given integer DEFAULT 0,\n  given_to text,\n  notes text,\n  created_at timestamptz DEFAULT now()\n);\nALTER TABLE distributions ENABLE ROW LEVEL SECURITY;\nCREATE POLICY "auth users" ON distributions FOR ALL USING (auth.role() = \'authenticated\');');
+    } else {
+      toast('Error: ' + res.error.message, 'error');
+    }
+    return;
+  }
   toast(editId ? 'Distribution updated!' : 'Distribution logged!', 'success');
   closeModal('add-distribution-modal');
   resetDistForm();
