@@ -36,6 +36,90 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
 
+/* ── DARK MODE ── */
+body.dark {
+  --maroon: #e05555;
+  --maroon-dark: #c0392b;
+  --maroon-light: #ff6b6b;
+  --maroon-faint: #2a1010;
+  --gold: #FFD700;
+  --gold-dim: #c9a900;
+  --gold-faint: #1e1a08;
+  --bg: #0f0f0f;
+  --bg2: #1a1a1a;
+  --bg3: #242424;
+  --text: #f0f0f0;
+  --text2: #aaa;
+  --text3: #666;
+  --border: #2e2e2e;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #f87171;
+  --shadow: 0 2px 16px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
+}
+body.dark #topbar { background: rgba(26,26,26,0.95); }
+body.dark #auth-screen { background: linear-gradient(135deg,#1a0000 0%,#3a0000 50%,#0a0a0a 100%); }
+body.dark .auth-box { background: var(--bg2); }
+body.dark .modal { background: var(--bg2); }
+body.dark .confirm-box { background: var(--bg2); }
+body.dark .search-wrap input:focus { background: var(--bg3); }
+body.dark #search-results { background: var(--bg2); }
+body.dark .search-result-item:hover { background: var(--maroon-faint); }
+body.dark tr:hover td { background: #2a1515 !important; }
+body.dark tr.row-complete td { background: #0d2018 !important; }
+body.dark tr.row-complete:hover td { background: #112a20 !important; }
+body.dark tr.row-partial td { background: #1e1a08 !important; }
+body.dark tr.row-partial:hover td { background: #2a2410 !important; }
+body.dark tr.row-pending td { background: #1e0a0a !important; }
+body.dark tr.row-pending:hover td { background: #2a1010 !important; }
+body.dark th { background: var(--bg3); }
+body.dark .items-stat-complete { background: #0d2018; border-color: #166534; }
+body.dark .items-stat-partial { background: #1e1a08; border-color: #92400e; }
+body.dark .items-stat-pending { background: #1e0a0a; border-color: #991b1b; }
+body.dark .items-stat-value { background: #160d2e; border-color: #5b21b6; }
+body.dark .btn-ghost { background: transparent; border-color: var(--border); color: var(--text2); }
+body.dark .btn-edit { background: #1e1a08; border-color: #92400e; color: #fde68a; }
+body.dark .btn-delete { background: #1e0a0a; border-color: #991b1b; color: #fca5a5; }
+body.dark .stat-card--stock-wide { background: linear-gradient(120deg, #1e1a08 0%, var(--bg2) 55%); }
+body.dark .dstile { background: var(--bg2); }
+body.dark .sponsor-tile { background: var(--bg2); }
+body.dark .dash-section { background: var(--bg2); }
+body.dark .table-wrap { background: var(--bg2); }
+
+/* ── DARK MODE TOGGLE ── */
+.dark-toggle {
+  width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+  border-radius:8px; cursor:pointer; background:none; border:1.5px solid var(--border);
+  color:var(--text2); font-size:15px; transition:all .18s;
+}
+.dark-toggle:hover { background:var(--bg3); color:var(--maroon); }
+
+/* ── ACTIVITY LOG ── */
+.activity-feed { display:flex; flex-direction:column; gap:0; }
+.activity-item {
+  display:flex; align-items:flex-start; gap:12px; padding:12px 0;
+  border-bottom:1px solid var(--border); font-size:13px;
+}
+.activity-item:last-child { border-bottom:none; }
+.activity-dot {
+  width:32px; height:32px; border-radius:50%; display:flex; align-items:center;
+  justify-content:center; font-size:13px; flex-shrink:0; margin-top:1px;
+}
+.activity-dot.add { background:#dcfce7; color:#15803d; }
+.activity-dot.edit { background:#fef9c3; color:#92400e; }
+.activity-dot.delete { background:#fee2e2; color:#dc2626; }
+.activity-dot.login { background:#ede9fe; color:#5b21b6; }
+body.dark .activity-dot.add { background:#0d2018; color:#22c55e; }
+body.dark .activity-dot.edit { background:#1e1a08; color:#fde68a; }
+body.dark .activity-dot.delete { background:#1e0a0a; color:#f87171; }
+body.dark .activity-dot.login { background:#160d2e; color:#a78bfa; }
+.activity-content { flex:1; min-width:0; }
+.activity-action { font-weight:600; color:var(--text); line-height:1.4; }
+.activity-action strong { color:var(--maroon); }
+.activity-time { font-size:11px; color:var(--text3); margin-top:2px; }
+.activity-empty { padding:20px; text-align:center; color:var(--text3); font-size:13px; }
+
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -575,6 +659,9 @@ tr.row-complete td .btn-delete, tr.row-partial td .btn-delete, tr.row-pending td
       <div class="nav-item" onclick="navigate('team')">
         <span class="nav-icon"><i class="fas fa-users"></i></span><span>Team</span>
       </div>
+      <div class="nav-item" onclick="navigate('activity')">
+        <span class="nav-icon"><i class="fas fa-clock-rotate-left"></i></span><span>Activity Log</span>
+      </div>
     </div>
     <div class="sidebar-user">
       <div class="sidebar-greeting" id="sidebar-greeting">Welcome!</div>
@@ -599,6 +686,8 @@ tr.row-complete td .btn-delete, tr.row-partial td .btn-delete, tr.row-pending td
       </div>
       <div class="topbar-actions">
         <button class="icon-btn" title="Refresh" onclick="refreshCurrentPage()"><i class="fas fa-sync-alt"></i></button>
+        <button class="dark-toggle" id="dark-toggle-btn" title="Toggle Dark Mode" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
+        <button class="icon-btn" title="Activity Log" onclick="navigate('activity')" id="activity-btn"><i class="fas fa-clock-rotate-left"></i></button>
         <button class="logout-btn" onclick="doLogout()">Logout</button>
       </div>
     </div>
@@ -758,6 +847,27 @@ tr.row-complete td .btn-delete, tr.row-partial td .btn-delete, tr.row-pending td
           <div class="page-title">Team Members</div>
         </div>
         <div id="team-list"></div>
+      </div>
+
+      <!-- ACTIVITY LOG -->
+      <div class="page" id="page-activity">
+        <div class="page-header">
+          <div class="page-title">Activity Log</div>
+          <div class="page-actions">
+            <select class="filter-select" id="act-filter-user" onchange="renderActivityLog()" style="font-size:12px">
+              <option value="">All Members</option>
+            </select>
+            <select class="filter-select" id="act-filter-type" onchange="renderActivityLog()" style="font-size:12px">
+              <option value="">All Actions</option>
+              <option value="add">Added</option>
+              <option value="edit">Edited</option>
+              <option value="delete">Deleted</option>
+              <option value="login">Login</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="clearActivityLog()"><i class="fas fa-trash"></i> Clear Log</button>
+          </div>
+        </div>
+        <div id="activity-list"></div>
       </div>
     </div>
   </div>
@@ -987,6 +1097,148 @@ let refreshTimer = null;
 let allSponsors = [];
 let allItems = [];
 let allTransactions = [];
+let activityLog = [];
+
+// ── DARK MODE ──
+function toggleDarkMode() {
+  const isDark = document.body.classList.toggle('dark');
+  localStorage.setItem('revo_dark', isDark ? '1' : '0');
+  const btn = document.getElementById('dark-toggle-btn');
+  if (btn) btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+  if (btn) btn.title = isDark ? 'Light Mode' : 'Dark Mode';
+}
+function initDarkMode() {
+  const saved = localStorage.getItem('revo_dark');
+  if (saved === '1') {
+    document.body.classList.add('dark');
+    const btn = document.getElementById('dark-toggle-btn');
+    if (btn) { btn.innerHTML = '<i class="fas fa-sun"></i>'; btn.title = 'Light Mode'; }
+  }
+}
+
+// ── ACTIVITY LOG (Supabase-backed, shared across all users) ──
+async function logActivity(type, action, detail) {
+  if (!currentUser) return;
+  const entry = {
+    user_id: currentUser.id,
+    username: currentUser.username || '',
+    display_name: currentUser.name || currentUser.username || 'Unknown',
+    action_type: type,
+    action,
+    detail: detail || ''
+  };
+  // Fire-and-forget insert — don't block the UI
+  db.from('activity_logs').insert(entry).then(({ error }) => {
+    if (error) console.warn('Activity log insert failed:', error.message);
+  });
+  // Optimistically prepend to local cache so current page updates instantly
+  activityLog.unshift({ ...entry, id: 'tmp-' + Date.now(), created_at: new Date().toISOString() });
+  if (currentPage === 'activity') renderActivityLog();
+}
+
+async function loadActivityLog() {
+  const { data, error } = await db
+    .from('activity_logs')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(300);
+  if (error) { console.warn('Activity log load failed:', error.message); activityLog = []; return; }
+  activityLog = data || [];
+}
+
+async function renderActivityLog() {
+  const el = document.getElementById('activity-list');
+  if (!el) return;
+
+  // Show loading skeleton on first load
+  if (!activityLog.length) {
+    el.innerHTML = `<div class="table-wrap" style="padding:20px">
+      <div class="skeleton" style="width:60%;margin-bottom:10px"></div>
+      <div class="skeleton" style="width:80%;margin-bottom:10px"></div>
+      <div class="skeleton" style="width:70%"></div>
+    </div>`;
+    await loadActivityLog();
+  }
+
+  // Populate user filter dropdown
+  const userFilter = document.getElementById('act-filter-user');
+  if (userFilter) {
+    const currentVal = userFilter.value;
+    const users = [...new Set(activityLog.map(a => a.username).filter(Boolean))];
+    userFilter.innerHTML = '<option value="">All Members</option>' +
+      users.map(u => `<option value="${esc(u)}" ${currentVal===u?'selected':''}>${esc(u)}</option>`).join('');
+    userFilter.value = currentVal;
+  }
+
+  const typeFilter = document.getElementById('act-filter-type')?.value || '';
+  const uFilter = document.getElementById('act-filter-user')?.value || '';
+
+  let entries = activityLog;
+  if (typeFilter) entries = entries.filter(a => a.action_type === typeFilter);
+  if (uFilter) entries = entries.filter(a => a.username === uFilter);
+
+  if (!entries.length) {
+    el.innerHTML = `<div class="table-wrap"><div class="activity-empty">
+      <i class="fas fa-clock-rotate-left" style="font-size:32px;color:var(--border);margin-bottom:12px;display:block"></i>
+      No activity yet. Actions like adding, editing, or deleting records will appear here.
+    </div></div>`;
+    return;
+  }
+
+  const icons = {
+    add:    '<i class="fas fa-plus"></i>',
+    edit:   '<i class="fas fa-pen"></i>',
+    delete: '<i class="fas fa-trash"></i>',
+    login:  '<i class="fas fa-right-to-bracket"></i>'
+  };
+
+  // Group by date
+  const groups = {};
+  entries.forEach(a => {
+    const d = new Date(a.created_at).toLocaleDateString('en-PH', { timeZone:'Asia/Manila', dateStyle:'long' });
+    if (!groups[d]) groups[d] = [];
+    groups[d].push(a);
+  });
+
+  let html = '';
+  Object.entries(groups).forEach(([date, items]) => {
+    html += `<div style="margin-bottom:20px">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;padding:0 0 8px;border-bottom:1px solid var(--border);margin-bottom:4px">${date}</div>
+      <div class="activity-feed">`;
+    items.forEach(a => {
+      const time = new Date(a.created_at).toLocaleTimeString('en-PH', { timeZone:'Asia/Manila', hour:'2-digit', minute:'2-digit' });
+      const isMe = a.username === currentUser?.username;
+      html += `<div class="activity-item">
+        <div class="activity-dot ${a.action_type}">${icons[a.action_type]||icons.add}</div>
+        <div class="activity-content">
+          <div class="activity-action">
+            <strong style="${isMe?'color:var(--maroon)':''}">${esc(a.display_name)}${isMe?' <span style="font-size:10px;font-weight:400;color:var(--text3)">(you)</span>':''}</strong>
+            ${esc(a.action)}${a.detail ? ` — <span style="color:var(--text2);font-weight:500">${esc(a.detail)}</span>` : ''}
+          </div>
+          <div class="activity-time"><i class="fas fa-clock" style="font-size:9px;margin-right:3px"></i>${time} · @${esc(a.username)}</div>
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  el.innerHTML = `<div class="table-wrap" style="padding:20px">${html}</div>`;
+}
+
+async function refreshActivityLog() {
+  await loadActivityLog();
+  renderActivityLog();
+}
+
+function clearActivityLog() {
+  confirm2('Clear Entire Activity Log', 'This will permanently delete ALL activity logs for the whole team. Are you sure?', async () => {
+    const { error } = await db.from('activity_logs').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    if (error) { toast('Error: ' + error.message, 'error'); return; }
+    activityLog = [];
+    renderActivityLog();
+    toast('Activity log cleared', 'info');
+  });
+}
 
 // ── UTILS ──
 function manilaTime(dt) {
@@ -1141,6 +1393,8 @@ async function initApp(user) {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app').classList.add('visible');
   updateSidebarUser();
+  initDarkMode();
+  logActivity('login', 'logged in', '');
   await Promise.all([loadSponsors(), loadItems(), loadTransactions()]);
   navigate('dashboard');
   if (refreshTimer) clearInterval(refreshTimer);
@@ -1166,7 +1420,7 @@ function navigate(page) {
   const pageId = 'page-' + (page === 'sponsor-detail' ? 'sponsor-detail' : page === 'item-detail' ? 'item-detail' : page);
   const el = document.getElementById(pageId);
   if (el) el.classList.add('active');
-  const navMap = { dashboard:0, sponsors:1, 'sponsor-detail':1, items:2, 'item-detail':2, transactions:3, team:4 };
+  const navMap = { dashboard:0, sponsors:1, 'sponsor-detail':1, items:2, 'item-detail':2, transactions:3, team:4, activity:5 };
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[page] !== undefined && navItems[navMap[page]]) navItems[navMap[page]].classList.add('active');
   closeSidebar();
@@ -1175,6 +1429,7 @@ function navigate(page) {
   else if (page === 'items') loadItems();
   else if (page === 'transactions') loadTransactions();
   else if (page === 'team') loadTeam();
+  else if (page === 'activity') renderActivityLog();
 }
 
 function refreshCurrentPage() {
@@ -1183,6 +1438,7 @@ function refreshCurrentPage() {
   else if (currentPage === 'items') loadItems();
   else if (currentPage === 'transactions') loadTransactions();
   else if (currentPage === 'team') loadTeam();
+  else if (currentPage === 'activity') refreshActivityLog();
 }
 
 // ── SIDEBAR MOBILE ──
@@ -1787,6 +2043,7 @@ async function saveSponsor() {
   if (error) { toast('Error: ' + error.message, 'error'); return; }
   closeModal('modal-sponsor');
   toast(editId ? 'Sponsor updated' : 'Sponsor added', 'success');
+  logActivity(editId ? 'edit' : 'add', editId ? 'updated sponsor' : 'added sponsor', name);
   await loadSponsors();
   if (currentPage==='dashboard') loadDashboard();
 }
@@ -1796,6 +2053,7 @@ function deleteSponsor(id, name) {
     const { error } = await db.from('sponsors').delete().eq('id', id);
     if (error) { toast('Error: ' + error.message, 'error'); return; }
     toast('Sponsor deleted', 'success');
+    logActivity('delete', 'deleted sponsor', name);
     await loadSponsors();
     if (currentPage==='sponsor-detail') navigate('sponsors');
   }, '<i class="fas fa-trash"></i>');
@@ -1887,6 +2145,7 @@ async function saveItem() {
   if (error) { toast('Error: ' + error.message, 'error'); return; }
   closeModal('modal-item');
   toast(editId ? 'Item updated' : 'Item added', 'success');
+  logActivity(editId ? 'edit' : 'add', editId ? 'updated item' : 'added item', name);
   await loadItems();
   await loadTransactions();
   if (currentPage==='dashboard') loadDashboard();
@@ -1897,6 +2156,7 @@ function deleteItem(id, name) {
     const { error } = await db.from('items').delete().eq('id', id);
     if (error) { toast('Error: ' + error.message, 'error'); return; }
     toast('Item deleted', 'success');
+    logActivity('delete', 'deleted item', name);
     await loadItems();
     await loadTransactions();
   }, '<i class="fas fa-trash"></i>');
@@ -1973,6 +2233,8 @@ async function saveTx() {
   if (error) { toast('Error: ' + error.message, 'error'); return; }
   closeModal('modal-tx');
   toast(editId ? 'Transaction updated' : 'Transaction logged', 'success');
+  const itemName = allItems.find(x => x.id === itemId)?.name || itemId;
+  logActivity(editId ? 'edit' : 'add', editId ? `updated transaction` : `logged ${move} transaction`, `${itemName} × ${qty}`);
   await loadTransactions();
   if (currentPage==='dashboard') loadDashboard();
   else if (currentPage==='items') renderItems();
@@ -1990,6 +2252,7 @@ function deleteTx(id) {
     const { error } = await db.from('transactions').delete().eq('id', id);
     if (error) { toast('Error: ' + error.message, 'error'); return; }
     toast('Transaction deleted', 'success');
+    logActivity('delete', 'deleted a transaction', '');
     await loadTransactions();
     if (currentPage==='dashboard') loadDashboard();
     else if (currentPage==='items') renderItems();
@@ -2036,6 +2299,7 @@ async function saveProfile() {
   updateSidebarUser();
   closeModal('modal-profile');
   toast('Profile updated', 'success');
+  logActivity('edit', 'updated their profile', '');
 }
 
 // ── GLOBAL SEARCH ──
