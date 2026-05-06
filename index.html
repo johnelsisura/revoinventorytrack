@@ -245,6 +245,91 @@ tr:hover td{background:var(--maroon-faint)}
 .tx-feed-sub{font-size:11px;color:var(--text3);margin-top:2px}
 .quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
 
+/* ── SPONSOR TILES ── */
+.tier-section { margin-bottom: 32px; }
+.tier-section-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+.tier-section-header .tier-icon { font-size: 22px; }
+.tier-section-header .tier-label {
+  font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.tier-section-header .tier-count {
+  margin-left: auto; font-size: 12px; color: var(--text3); font-weight: 600;
+}
+.tier-gold .tier-section-header { border-color: var(--gold); }
+.tier-gold .tier-label { color: #92400e; }
+.tier-silver .tier-section-header { border-color: #94a3b8; }
+.tier-silver .tier-label { color: #475569; }
+.tier-bronze .tier-section-header { border-color: #cd7f32; }
+.tier-bronze .tier-label { color: #78350f; }
+.tier-inkind .tier-section-header { border-color: #a78bfa; }
+.tier-inkind .tier-label { color: #5b21b6; }
+
+.sponsor-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.sponsor-tile {
+  background: var(--bg2); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  cursor: pointer; transition: all .2s; position: relative;
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.sponsor-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--maroon); }
+.sponsor-tile::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.tier-gold .sponsor-tile::before { background: linear-gradient(90deg, var(--gold), var(--gold-dim)); }
+.tier-silver .sponsor-tile::before { background: linear-gradient(90deg, #94a3b8, #64748b); }
+.tier-bronze .sponsor-tile::before { background: linear-gradient(90deg, #cd7f32, #a0522d); }
+.tier-inkind .sponsor-tile::before { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+.sponsor-tile-name {
+  font-weight: 700; font-size: 14px; color: var(--maroon-dark); margin-bottom: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sponsor-tile-company {
+  font-size: 12px; color: var(--text3); margin-bottom: 12px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sponsor-tile-stats {
+  display: flex; gap: 12px; margin-bottom: 12px;
+}
+.sponsor-tile-stat { text-align: center; flex: 1; }
+.sponsor-tile-stat-val { font-size: 18px; font-weight: 800; color: var(--maroon); line-height: 1; }
+.sponsor-tile-stat-lbl { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: .6px; margin-top: 2px; }
+.sponsor-tile-progress { height: 5px; background: var(--bg3); border-radius: 50px; overflow: hidden; margin-bottom: 10px; }
+.sponsor-tile-progress-fill { height: 100%; border-radius: 50px; transition: width .4s; background: var(--maroon); }
+.sponsor-tile-progress-fill.complete { background: var(--success); }
+.sponsor-tile-progress-fill.partial { background: var(--warning); }
+.sponsor-tile-actions { display: flex; gap: 5px; justify-content: flex-end; }
+
+/* ── STOCK BREAKDOWN ── */
+.stock-breakdown { margin-top: 12px; }
+.stock-breakdown-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px;
+}
+.stock-breakdown-item:last-child { border-bottom: none; }
+.stock-breakdown-name { color: var(--text2); font-weight: 500; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stock-breakdown-val { font-weight: 700; color: var(--maroon); margin-left: 8px; font-size: 13px; }
+.stock-breakdown-bar { height: 4px; background: var(--bg3); border-radius: 50px; overflow: hidden; margin-top: 2px; }
+.stock-breakdown-bar-fill { height: 100%; background: var(--maroon); border-radius: 50px; }
+
+/* ── DASHBOARD INSIGHTS ── */
+.insights-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 16px; }
+.insight-card {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px;
+}
+.insight-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+.insight-text { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.insight-text strong { color: var(--maroon-dark); display: block; margin-bottom: 2px; font-size: 13px; }
+
 /* ── SPONSOR DETAIL ── */
 .detail-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
 .back-btn{background:none;border:none;color:var(--maroon);font-size:22px;cursor:pointer;padding:2px;line-height:1}
@@ -283,6 +368,51 @@ tr:hover td{background:var(--maroon-faint)}
   .table-wrap{border:none;box-shadow:none}
   th,td{padding:6px 10px}
 }
+/* ── UTILITIES ── */
+.text-sm { font-size: 12px; }
+.text-muted { color: var(--text3); }
+.mono { font-family: monospace; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.info-item label { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 4px; }
+.info-item p { font-size: 14px; color: var(--text); font-weight: 500; }
+
+/* ── STOCK HIERARCHY ── */
+.hier-tier-group { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.hier-tier-header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--bg3); border-bottom: 1px solid var(--border); }
+.hier-sponsor-block { border-bottom: 1px solid var(--border); }
+.hier-sponsor-block:last-child { border-bottom: none; }
+.hier-sponsor-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px 6px; cursor: pointer; transition: background .15s; }
+.hier-sponsor-header:hover { background: var(--maroon-faint); }
+.hier-sponsor-left { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.hier-sponsor-name { font-size: 13px; font-weight: 700; color: var(--maroon-dark); }
+.hier-sponsor-company { font-size: 11px; color: var(--text3); }
+.hier-sponsor-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; margin-left: 10px; }
+.hier-stock-chip { font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+.hier-progress-bar { height: 4px; background: var(--bg3); margin: 0 16px 0; border-radius: 50px; overflow: hidden; }
+.hier-progress-fill { height: 100%; border-radius: 50px; transition: width .4s; background: var(--maroon); }
+.hier-items-list { padding: 6px 16px 12px; }
+.hier-item-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed var(--border); font-size: 12px; }
+.hier-item-row:last-child { border-bottom: none; }
+.hier-item-name { color: var(--text); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hier-item-stats { display: flex; gap: 10px; flex-shrink: 0; margin-left: 10px; }
+.hier-item-badge { font-size: 11px; font-weight: 600; white-space: nowrap; }
+
+/* ── ITEM DETAIL PAGE ── */
+#page-item-detail { display: none; }
+#page-item-detail.active { display: block; }
+.item-detail-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.item-detail-meta { flex: 1; min-width: 0; }
+.item-detail-title { font-size: 22px; font-weight: 800; color: var(--maroon-dark); }
+.item-detail-sub { font-size: 13px; color: var(--text3); margin-top: 4px; }
+.item-stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+.item-stat-pill { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 18px; text-align: center; }
+.item-stat-pill .val { font-size: 24px; font-weight: 800; color: var(--maroon); line-height: 1; }
+.item-stat-pill .lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .6px; margin-top: 3px; }
+
+/* ── TRANSACTION EDIT ── */
+.tx-edit-row { background: var(--gold-faint) !important; }
+
 </style>
 </head>
 <body>
@@ -401,11 +531,16 @@ tr:hover td{background:var(--maroon-faint)}
           <div class="stat-card"><div class="stat-label">Total Items</div><div class="stat-value" id="d-items">—</div></div>
           <div class="stat-card"><div class="stat-label">Total IN</div><div class="stat-value" id="d-in" style="color:var(--success)">—</div></div>
           <div class="stat-card"><div class="stat-label">Total OUT</div><div class="stat-value" id="d-out" style="color:var(--danger)">—</div></div>
-          <div class="stat-card"><div class="stat-label">Current Stock</div><div class="stat-value" id="d-stock">—</div></div>
+          <div class="stat-card"><div class="stat-label">Overall Stock</div><div class="stat-value" id="d-stock">—</div><div class="stat-sub" id="d-stock-sub"></div></div>
+        </div>
+        <!-- STOCK HIERARCHY -->
+        <div class="dash-section" style="margin-bottom:18px">
+          <div class="section-title"><i class="fas fa-layer-group" style="color:var(--maroon)"></i> Stock by Sponsor &amp; Item</div>
+          <div id="dash-stock-hierarchy"></div>
         </div>
         <div class="dash-grid">
           <div class="dash-section">
-            <div class="section-title">Recent Transactions</div>
+            <div class="section-title"><i class="fas fa-chart-bar" style="color:var(--maroon)"></i> Recent Transactions</div>
             <div id="tx-feed">
               <div class="skeleton" style="width:60%"></div>
               <div class="skeleton" style="width:80%"></div>
@@ -413,8 +548,8 @@ tr:hover td{background:var(--maroon-faint)}
             </div>
           </div>
           <div class="dash-section">
-            <div class="section-title">Sponsor Progress</div>
-            <div id="sponsor-progress"></div>
+            <div class="section-title"><i class="fas fa-lightbulb" style="color:var(--gold-dim)"></i> Insights</div>
+            <div id="dash-insights"><div class="skeleton" style="width:70%"></div></div>
           </div>
         </div>
       </div>
@@ -450,6 +585,15 @@ tr:hover td{background:var(--maroon-faint)}
           </div>
         </div>
         <div id="items-list"></div>
+      </div>
+
+      <!-- ITEM DETAIL -->
+      <div class="page" id="page-item-detail">
+        <div class="detail-header">
+          <button class="back-btn" onclick="navigate('items')">←</button>
+          <div class="page-title" id="detail-item-name">Item</div>
+        </div>
+        <div id="detail-item-body"></div>
       </div>
 
       <!-- TRANSACTIONS -->
@@ -595,7 +739,7 @@ tr:hover td{background:var(--maroon-faint)}
   </div>
 </div>
 
-<!-- ADD TRANSACTION MODAL -->
+<!-- ADD/EDIT TRANSACTION MODAL -->
 <div class="modal-overlay" id="modal-tx">
   <div class="modal">
     <div class="modal-header">
@@ -603,6 +747,7 @@ tr:hover td{background:var(--maroon-faint)}
       <button class="modal-close" onclick="closeModal('modal-tx')">✕</button>
     </div>
     <div class="modal-body">
+      <input type="hidden" id="tx-edit-id"/>
       <div class="form-group" id="fg-tx-date">
         <label>Date *</label>
         <input type="date" id="tx-date"/>
@@ -654,7 +799,7 @@ tr:hover td{background:var(--maroon-faint)}
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-tx')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveTx()">Log Transaction</button>
+      <button class="btn btn-primary" id="tx-save-btn" onclick="saveTx()">Log Transaction</button>
     </div>
   </div>
 </div>
@@ -867,10 +1012,10 @@ function navigate(page) {
   currentPage = page;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const pageId = 'page-' + (page === 'sponsor-detail' ? 'sponsor-detail' : page);
+  const pageId = 'page-' + (page === 'sponsor-detail' ? 'sponsor-detail' : page === 'item-detail' ? 'item-detail' : page);
   const el = document.getElementById(pageId);
   if (el) el.classList.add('active');
-  const navMap = { dashboard:0, sponsors:1, 'sponsor-detail':1, items:2, transactions:3, team:4 };
+  const navMap = { dashboard:0, sponsors:1, 'sponsor-detail':1, items:2, 'item-detail':2, transactions:3, team:4 };
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[page] !== undefined && navItems[navMap[page]]) navItems[navMap[page]].classList.add('active');
   closeSidebar();
@@ -932,13 +1077,16 @@ async function loadDashboard() {
   await Promise.all([loadSponsors(), loadItems(), loadTransactions()]);
   const totalIn = allTransactions.filter(t => t.movement_type === 'IN').reduce((s,t) => s + t.qty, 0);
   const totalOut = allTransactions.filter(t => t.movement_type === 'OUT').reduce((s,t) => s + t.qty, 0);
+  const currentStock = totalIn - totalOut;
   document.getElementById('d-sponsors').textContent = allSponsors.length;
   document.getElementById('d-items').textContent = allItems.length;
   document.getElementById('d-in').textContent = totalIn;
   document.getElementById('d-out').textContent = totalOut;
-  document.getElementById('d-stock').textContent = totalIn - totalOut;
+  document.getElementById('d-stock').textContent = currentStock;
+  document.getElementById('d-stock-sub').textContent = totalIn > 0 ? `${totalOut} given out` : '';
   renderTxFeed();
-  renderSponsorProgress();
+  renderStockHierarchy();
+  renderInsights(totalIn, totalOut, currentStock);
 }
 
 async function loadTeam() {
@@ -971,21 +1119,66 @@ function renderSponsors() {
   const el = document.getElementById('sponsors-list');
   if (!el) return;
   if (!allSponsors.length) { el.innerHTML = emptyState('🤝','No sponsors yet','Click + Add Sponsor to get started'); return; }
-  el.innerHTML = `<div class="table-wrap"><table>
-    <thead><tr><th>Name</th><th>Company</th><th>Tier</th><th>Contact</th><th>Actions</th></tr></thead>
-    <tbody>${allSponsors.map(s => `
-      <tr>
-        <td><a href="#" onclick="viewSponsor('${s.id}');return false" style="color:var(--maroon);font-weight:600;text-decoration:none">${esc(s.name)}</a></td>
-        <td>${esc(s.company||'—')}</td>
-        <td>${tierBadge(s.tier)}</td>
-        <td class="text-sm text-muted">${esc(s.contact_person||'—')}<br>${esc(s.contact_number||'')}</td>
-        <td><div class="table-actions">
-          <button class="btn btn-ghost btn-sm" onclick="editSponsor('${s.id}')">✏️</button>
-          <button class="btn btn-ghost btn-sm" onclick="deleteSponsor('${s.id}','${esc(s.name)}')">🗑️</button>
-        </div></td>
-      </tr>`).join('')}
-    </tbody>
-  </table></div>`;
+
+  const tiers = [
+    { key: 'Gold',    icon: '🥇', cls: 'tier-gold' },
+    { key: 'Silver',  icon: '🥈', cls: 'tier-silver' },
+    { key: 'Bronze',  icon: '🥉', cls: 'tier-bronze' },
+    { key: 'In-Kind', icon: '🎁', cls: 'tier-inkind' },
+  ];
+
+  let html = '';
+  tiers.forEach(({ key, icon, cls }) => {
+    const group = allSponsors.filter(s => s.tier === key);
+    if (!group.length) return;
+    const tilesHtml = group.map(s => {
+      const sponsorItems = allItems.filter(i => i.sponsor_id === s.id);
+      const total = sponsorItems.reduce((sum, i) => sum + (i.total_qty||0), 0);
+      const received = sponsorItems.reduce((sum, i) => {
+        return sum + allTransactions.filter(t => t.item_id===i.id && t.movement_type==='IN').reduce((s2,t) => s2+t.qty,0);
+      }, 0);
+      const currentStock = sponsorItems.reduce((sum, i) => sum + computeStock(i.id), 0);
+      const pct = total > 0 ? Math.min(100, Math.round(received/total*100)) : 0;
+      const fillCls = pct>=100?'complete':pct>0?'partial':'';
+      return `<div class="sponsor-tile" onclick="viewSponsor('${s.id}')">
+        <div class="sponsor-tile-name">${esc(s.name)}</div>
+        <div class="sponsor-tile-company">${esc(s.company||'No company listed')}</div>
+        <div class="sponsor-tile-stats">
+          <div class="sponsor-tile-stat">
+            <div class="sponsor-tile-stat-val">${sponsorItems.length}</div>
+            <div class="sponsor-tile-stat-lbl">Items</div>
+          </div>
+          <div class="sponsor-tile-stat">
+            <div class="sponsor-tile-stat-val">${received}</div>
+            <div class="sponsor-tile-stat-lbl">Received</div>
+          </div>
+          <div class="sponsor-tile-stat">
+            <div class="sponsor-tile-stat-val" style="color:${currentStock>0?'var(--success)':'var(--text3)'}">${currentStock}</div>
+            <div class="sponsor-tile-stat-lbl">In Stock</div>
+          </div>
+        </div>
+        <div class="sponsor-tile-progress">
+          <div class="sponsor-tile-progress-fill ${fillCls}" style="width:${pct}%" title="${pct}% received"></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:10px;color:var(--text3)">${pct}% received (${received}/${total})</span>
+          <div class="sponsor-tile-actions" onclick="event.stopPropagation()">
+            <button class="btn btn-ghost btn-sm" onclick="editSponsor('${s.id}')">✏️</button>
+            <button class="btn btn-ghost btn-sm" onclick="deleteSponsor('${s.id}','${esc(s.name)}')">🗑️</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    html += `<div class="tier-section ${cls}">
+      <div class="tier-section-header">
+        <span class="tier-icon">${icon}</span>
+        <span class="tier-label">${key} Sponsors</span>
+        <span class="tier-count">${group.length} sponsor${group.length!==1?'s':''}</span>
+      </div>
+      <div class="sponsor-tiles">${tilesHtml}</div>
+    </div>`;
+  });
+  el.innerHTML = html || emptyState('🤝','No sponsors yet','Click + Add Sponsor to get started');
 }
 
 // ── RENDER ITEMS ──
@@ -1002,24 +1195,24 @@ function renderItems() {
   let grandIn = 0, grandOut = 0, grandTotal = 0;
   let rows = '';
   Object.keys(groups).sort().forEach(cat => {
-    let catIn = 0, catOut = 0, catTotal = 0;
-    rows += `<tr class="subtotal-row"><td colspan="7" style="padding:8px 14px;font-size:11px;letter-spacing:.5px;text-transform:uppercase">${esc(cat)}</td></tr>`;
+    let catIn = 0, catTotal = 0;
+    rows += `<tr class="subtotal-row"><td colspan="8" style="padding:8px 14px;font-size:11px;letter-spacing:.5px;text-transform:uppercase">${esc(cat)}</td></tr>`;
     groups[cat].forEach(item => {
-      const cur = computeStock(item.id);
-      catIn += allTransactions.filter(t => t.item_id===item.id && t.movement_type==='IN').reduce((s,t) => s+t.qty,0);
-      catOut += allTransactions.filter(t => t.item_id===item.id && t.movement_type==='OUT').reduce((s,t) => s+t.qty,0);
-      catTotal += item.total_qty || 0;
-      grandIn += allTransactions.filter(t => t.item_id===item.id && t.movement_type==='IN').reduce((s,t) => s+t.qty,0);
-      grandOut += allTransactions.filter(t => t.item_id===item.id && t.movement_type==='OUT').reduce((s,t) => s+t.qty,0);
-      grandTotal += item.total_qty || 0;
-      rows += `<tr>
+      const itemIn = allTransactions.filter(t => t.item_id===item.id && t.movement_type==='IN').reduce((s,t) => s+t.qty,0);
+      const itemOut = allTransactions.filter(t => t.item_id===item.id && t.movement_type==='OUT').reduce((s,t) => s+t.qty,0);
+      const cur = itemIn - itemOut;
+      catIn += itemIn; catTotal += item.total_qty || 0;
+      grandIn += itemIn; grandOut += itemOut; grandTotal += item.total_qty || 0;
+      rows += `<tr style="cursor:pointer" onclick="viewItem('${item.id}')">
         <td><strong>${esc(item.name)}</strong></td>
         <td class="text-muted text-sm">${esc(item.variant||'—')}</td>
         <td class="text-sm">${esc(item.sponsors?.name||'—')}</td>
+        <td class="text-sm text-muted">${esc(item.category||'—')}</td>
         <td class="mono">${item.total_qty||0}</td>
-        <td class="mono"><strong>${cur}</strong></td>
+        <td class="mono" style="color:var(--success);font-weight:700">${itemIn}</td>
+        <td class="mono" style="color:${cur>0?'var(--maroon)':'var(--text3)'};font-weight:700">${cur}</td>
         <td>${statusBadge(cur, item.total_qty||0)}</td>
-        <td><div class="table-actions">
+        <td><div class="table-actions" onclick="event.stopPropagation()">
           <button class="btn btn-ghost btn-sm" onclick="editItem('${item.id}')">✏️</button>
           <button class="btn btn-ghost btn-sm" onclick="deleteItem('${item.id}','${esc(item.name)}')">🗑️</button>
         </div></td>
@@ -1028,12 +1221,12 @@ function renderItems() {
   });
   const grandCur = grandIn - grandOut;
   el.innerHTML = `<div class="table-wrap"><table>
-    <thead><tr><th>Item</th><th>Variant</th><th>Sponsor</th><th>Total Qty</th><th>Current Qty</th><th>Status</th><th>Actions</th></tr></thead>
+    <thead><tr><th>Item</th><th>Variant</th><th>Sponsor</th><th>Category</th><th>Total Qty</th><th>Received</th><th>Current Stock</th><th>Status</th><th>Actions</th></tr></thead>
     <tbody>${rows}
       <tr class="total-row">
-        <td colspan="3"><strong>GRAND TOTAL</strong></td>
+        <td colspan="4"><strong>GRAND TOTAL</strong></td>
         <td class="mono"><strong>${grandTotal}</strong></td>
-        <td class="mono"><strong>${grandCur}</strong></td>
+        <td class="mono"><strong>${grandIn}</strong></td>
         <td></td><td></td>
       </tr>
     </tbody>
@@ -1048,7 +1241,7 @@ function renderTransactions() {
   el.innerHTML = `<div class="table-wrap"><table>
     <thead><tr><th>Date</th><th>Movement</th><th>Distribution</th><th>Item</th><th>Qty</th><th>Given To/By</th><th>Logged By</th><th>Notes</th><th>Actions</th></tr></thead>
     <tbody>${allTransactions.map(t => `
-      <tr>
+      <tr id="tx-row-${t.id}">
         <td class="text-sm text-muted">${manilaDate(t.date)}</td>
         <td>${moveBadge(t.movement_type)}</td>
         <td class="text-sm">${esc(t.distribution_type||'—')}</td>
@@ -1057,10 +1250,31 @@ function renderTransactions() {
         <td class="text-sm">${esc(t.given_to_or_by||'—')}</td>
         <td class="text-sm text-muted">${esc(t.received_by||'—')}</td>
         <td class="text-sm text-muted">${esc(t.notes||'—')}</td>
-        <td><button class="btn btn-ghost btn-sm" onclick="deleteTx('${t.id}')">🗑️</button></td>
+        <td><div class="table-actions">
+          <button class="btn btn-ghost btn-sm" onclick="editTx('${t.id}')">✏️</button>
+          <button class="btn btn-ghost btn-sm" onclick="deleteTx('${t.id}')">🗑️</button>
+        </div></td>
       </tr>`).join('')}
     </tbody>
   </table></div>`;
+}
+
+function editTx(id) {
+  const t = allTransactions.find(x => x.id === id);
+  if (!t) return;
+  document.querySelector('#modal-tx .modal-title').textContent = 'Edit Transaction';
+  document.getElementById('tx-edit-id').value = id;
+  document.getElementById('tx-date').value = t.date || '';
+  document.getElementById('tx-move').value = t.movement_type || '';
+  document.getElementById('tx-dist').value = t.distribution_type || '';
+  document.getElementById('tx-qty').value = t.qty || '';
+  document.getElementById('tx-given').value = t.given_to_or_by || '';
+  document.getElementById('tx-notes').value = t.notes || '';
+  document.getElementById('tx-loggedby').value = t.received_by || '';
+  populateItemDropdowns();
+  document.getElementById('tx-item').value = t.item_id || '';
+  document.getElementById('tx-save-btn').textContent = 'Save Changes';
+  openModal('modal-tx');
 }
 
 // ── RENDER TX FEED ──
@@ -1079,27 +1293,139 @@ function renderTxFeed() {
     </div>`).join('');
 }
 
-// ── RENDER SPONSOR PROGRESS ──
-function renderSponsorProgress() {
-  const el = document.getElementById('sponsor-progress');
+// ── RENDER STOCK HIERARCHY (Dashboard) ──
+function renderStockHierarchy() {
+  const el = document.getElementById('dash-stock-hierarchy');
   if (!el) return;
   if (!allSponsors.length) { el.innerHTML = `<div class="empty-state" style="padding:20px"><div class="empty-sub">No sponsors yet</div></div>`; return; }
-  el.innerHTML = allSponsors.map(s => {
-    const sponsorItems = allItems.filter(i => i.sponsor_id === s.id);
-    const total = sponsorItems.reduce((sum, i) => sum + (i.total_qty||0), 0);
-    const received = sponsorItems.reduce((sum, i) => {
-      return sum + allTransactions.filter(t => t.item_id===i.id && t.movement_type==='IN').reduce((s2,t) => s2+t.qty,0);
-    }, 0);
-    const pct = total > 0 ? Math.min(100, Math.round(received/total*100)) : 0;
-    const cls = pct>=100?'complete':pct>0?'partial':'';
-    return `<div class="progress-wrap">
-      <div class="progress-label">
-        <span style="font-weight:600;font-size:12px">${esc(s.name)}</span>
-        <span class="text-muted text-sm">${received}/${total} (${pct}%)</span>
+
+  const tiers = [
+    { key: 'Gold',    icon: '🥇', cls: 'tier-gold',   color: '#92400e' },
+    { key: 'Silver',  icon: '🥈', cls: 'tier-silver',  color: '#475569' },
+    { key: 'Bronze',  icon: '🥉', cls: 'tier-bronze',  color: '#78350f' },
+    { key: 'In-Kind', icon: '🎁', cls: 'tier-inkind',  color: '#5b21b6' },
+  ];
+
+  let html = '';
+  tiers.forEach(({ key, icon, cls, color }) => {
+    const group = allSponsors.filter(s => s.tier === key);
+    if (!group.length) return;
+
+    let sponsorRows = '';
+    group.forEach(s => {
+      const sponsorItems = allItems.filter(i => i.sponsor_id === s.id);
+      const sponsorStock = sponsorItems.reduce((sum,i) => sum + computeStock(i.id), 0);
+      const sponsorReceived = sponsorItems.reduce((sum,i) => sum + allTransactions.filter(t=>t.item_id===i.id&&t.movement_type==='IN').reduce((a,t)=>a+t.qty,0), 0);
+      const sponsorTotal = sponsorItems.reduce((sum,i) => sum + (i.total_qty||0), 0);
+      const pct = sponsorTotal > 0 ? Math.min(100, Math.round(sponsorReceived/sponsorTotal*100)) : 0;
+      const fillCls = pct>=100?'complete':pct>0?'partial':'';
+
+      // Item rows
+      const itemRows = sponsorItems.map(item => {
+        const iIn = allTransactions.filter(t=>t.item_id===item.id&&t.movement_type==='IN').reduce((s,t)=>s+t.qty,0);
+        const iOut = allTransactions.filter(t=>t.item_id===item.id&&t.movement_type==='OUT').reduce((s,t)=>s+t.qty,0);
+        const iCur = iIn - iOut;
+        const iTotal = item.total_qty || 0;
+        const iStatus = iCur >= iTotal && iTotal > 0 ? 'complete' : iCur > 0 ? 'partial' : 'pending';
+        const iStatusColor = { complete: 'var(--success)', partial: 'var(--warning)', pending: 'var(--danger)' }[iStatus];
+        return `<div class="hier-item-row">
+          <div class="hier-item-name">
+            <span style="color:var(--text3);margin-right:4px">└</span>
+            ${esc(item.name)}${item.variant ? ` <span style="color:var(--text3);font-size:11px">(${esc(item.variant)})</span>` : ''}
+          </div>
+          <div class="hier-item-stats">
+            <span class="hier-item-badge" style="color:var(--success)">IN: ${iIn}</span>
+            <span class="hier-item-badge" style="color:var(--danger)">OUT: ${iOut}</span>
+            <span class="hier-item-badge" style="color:${iStatusColor};font-weight:700">Stock: ${iCur}/${iTotal}</span>
+          </div>
+        </div>`;
+      }).join('') || `<div class="hier-item-row" style="color:var(--text3);font-style:italic;padding-left:20px;font-size:12px">No items linked</div>`;
+
+      sponsorRows += `<div class="hier-sponsor-block">
+        <div class="hier-sponsor-header" onclick="viewSponsor('${s.id}')">
+          <div class="hier-sponsor-left">
+            <span class="hier-sponsor-name">${esc(s.name)}</span>
+            ${s.company ? `<span class="hier-sponsor-company">${esc(s.company)}</span>` : ''}
+          </div>
+          <div class="hier-sponsor-right">
+            <span class="hier-stock-chip" style="color:${sponsorStock>0?'var(--success)':'var(--text3)'}">
+              <i class="fas fa-box" style="font-size:10px"></i> ${sponsorStock} in stock
+            </span>
+            <span class="hier-stock-chip" style="color:var(--text2)">${sponsorReceived}/${sponsorTotal} rcvd</span>
+            <i class="fas fa-chevron-right" style="font-size:11px;color:var(--text3)"></i>
+          </div>
+        </div>
+        <div class="hier-progress-bar">
+          <div class="hier-progress-fill progress-fill ${fillCls}" style="width:${pct}%"></div>
+        </div>
+        <div class="hier-items-list">${itemRows}</div>
+      </div>`;
+    });
+
+    html += `<div class="hier-tier-group ${cls}" style="margin-bottom:20px">
+      <div class="hier-tier-header">
+        <span>${icon}</span>
+        <span style="font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:${color}">${key} Sponsors</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--text3)">${group.length} sponsor${group.length!==1?'s':''}</span>
       </div>
-      <div class="progress-bar"><div class="progress-fill ${cls}" style="width:${pct}%"></div></div>
+      ${sponsorRows}
     </div>`;
-  }).join('');
+  });
+
+  el.innerHTML = html || `<div class="empty-state" style="padding:20px"><div class="empty-sub">No data yet</div></div>`;
+}
+
+// ── RENDER INSIGHTS ──
+function renderInsights(totalIn, totalOut, currentStock) {
+  const el = document.getElementById('dash-insights');
+  if (!el) return;
+  const insights = [];
+
+  // Low stock items
+  const lowStock = allItems.filter(i => {
+    const cur = computeStock(i.id);
+    return cur > 0 && cur < (i.total_qty||0) * 0.25 && (i.total_qty||0) > 0;
+  });
+  if (lowStock.length) {
+    insights.push({ icon: '⚠️', title: 'Low Stock Alert', text: `${lowStock.length} item${lowStock.length!==1?'s are':' is'} below 25% of expected quantity.` });
+  }
+
+  // Pending items (zero received)
+  const pending = allItems.filter(i => computeStock(i.id) === 0 && (i.total_qty||0) > 0);
+  if (pending.length) {
+    insights.push({ icon: '🔴', title: 'Pending Items', text: `${pending.length} item${pending.length!==1?'s have':' has'} not been received yet.` });
+  }
+
+  // Complete items
+  const complete = allItems.filter(i => {
+    const cur = computeStock(i.id);
+    return cur >= (i.total_qty||0) && (i.total_qty||0) > 0;
+  });
+  if (complete.length) {
+    insights.push({ icon: '✅', title: 'Fully Stocked', text: `${complete.length} item${complete.length!==1?'s are':' is'} at 100% of expected quantity.` });
+  }
+
+  // Distribution rate
+  if (totalIn > 0) {
+    const distRate = Math.round(totalOut / totalIn * 100);
+    insights.push({ icon: '📤', title: 'Distribution Rate', text: `${distRate}% of received items have been given out (${totalOut} of ${totalIn}).` });
+  }
+
+  // Sponsors without items
+  const noItems = allSponsors.filter(s => !allItems.some(i => i.sponsor_id === s.id));
+  if (noItems.length) {
+    insights.push({ icon: '🤝', title: 'Sponsors with No Items', text: `${noItems.length} sponsor${noItems.length!==1?'s have':' has'} no items linked yet.` });
+  }
+
+  if (!insights.length) {
+    el.innerHTML = `<div class="empty-state" style="padding:16px"><div class="empty-sub">Add more data to see insights here.</div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="insights-grid">${insights.map(ins => `
+    <div class="insight-card">
+      <div class="insight-icon">${ins.icon}</div>
+      <div class="insight-text"><strong>${ins.title}</strong>${ins.text}</div>
+    </div>`).join('')}</div>`;
 }
 
 // ── SPONSOR DETAIL ──
@@ -1152,7 +1478,58 @@ async function viewSponsor(id) {
   `;
 }
 
-// ── SPONSOR CRUD ──
+// ── ITEM DETAIL ──
+function viewItem(id) {
+  navigate('item-detail');
+  const item = allItems.find(x => x.id === id);
+  if (!item) return;
+  document.getElementById('detail-item-name').textContent = item.name + (item.variant ? ` (${item.variant})` : '');
+  const itemTxs = allTransactions.filter(t => t.item_id === id).sort((a,b) => new Date(b.date)-new Date(a.date));
+  const totalIn = itemTxs.filter(t=>t.movement_type==='IN').reduce((s,t)=>s+t.qty,0);
+  const totalOut = itemTxs.filter(t=>t.movement_type==='OUT').reduce((s,t)=>s+t.qty,0);
+  const curStock = totalIn - totalOut;
+  const pct = (item.total_qty||0) > 0 ? Math.min(100,Math.round(totalIn/(item.total_qty||1)*100)) : 0;
+  const fillCls = pct>=100?'complete':pct>0?'partial':'';
+  const sponsor = allSponsors.find(s=>s.id===item.sponsor_id);
+
+  document.getElementById('detail-item-body').innerHTML = `
+    <div class="info-grid" style="margin-bottom:16px">
+      <div class="info-item"><label>Sponsor</label><p>${sponsor?esc(sponsor.name):'—'}</p></div>
+      <div class="info-item"><label>Category</label><p>${esc(item.category||'—')}</p></div>
+      <div class="info-item"><label>Variant</label><p>${esc(item.variant||'—')}</p></div>
+      <div class="info-item"><label>Expected Qty</label><p>${item.total_qty||0}</p></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <button class="btn btn-ghost btn-sm" onclick="editItem('${item.id}')">✏️ Edit</button>
+      <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteItem('${item.id}','${esc(item.name)}')">🗑️ Delete</button>
+      <button class="btn btn-primary btn-sm" onclick="openAddTxModal()">+ Log Transaction</button>
+    </div>
+    <div class="item-stat-row">
+      <div class="item-stat-pill"><div class="val">${item.total_qty||0}</div><div class="lbl">Expected</div></div>
+      <div class="item-stat-pill"><div class="val" style="color:var(--success)">${totalIn}</div><div class="lbl">Received IN</div></div>
+      <div class="item-stat-pill"><div class="val" style="color:var(--danger)">${totalOut}</div><div class="lbl">Given OUT</div></div>
+      <div class="item-stat-pill"><div class="val" style="color:${curStock>0?'var(--maroon)':'var(--text3)'}">${curStock}</div><div class="lbl">Current Stock</div></div>
+    </div>
+    <div class="progress-wrap" style="margin-bottom:20px">
+      <div class="progress-label"><span>Receipt Progress</span><span>${pct}% (${totalIn}/${item.total_qty||0})</span></div>
+      <div class="progress-bar"><div class="progress-fill ${fillCls}" style="width:${pct}%"></div></div>
+    </div>
+    <hr class="divider"/>
+    <div class="section-title" style="margin-bottom:12px">Transactions (${itemTxs.length})</div>
+    ${itemTxs.length ? `<div class="table-wrap"><table>
+      <thead><tr><th>Date</th><th>Movement</th><th>Distribution</th><th>Qty</th><th>Given To/By</th><th>Logged By</th><th>Notes</th></tr></thead>
+      <tbody>${itemTxs.map(t => `<tr>
+        <td class="text-sm text-muted">${manilaDate(t.date)}</td>
+        <td>${moveBadge(t.movement_type)}</td>
+        <td class="text-sm">${esc(t.distribution_type||'—')}</td>
+        <td class="mono"><strong>${t.qty}</strong></td>
+        <td class="text-sm">${esc(t.given_to_or_by||'—')}</td>
+        <td class="text-sm text-muted">${esc(t.received_by||'—')}</td>
+        <td class="text-sm text-muted">${esc(t.notes||'—')}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>` : `<p class="text-muted text-sm">No transactions for this item.</p>`}
+  `;
+}
 function openAddSponsorModal() {
   document.getElementById('sponsor-modal-title').textContent = 'Add Sponsor';
   document.getElementById('sponsor-edit-id').value = '';
@@ -1317,6 +1694,9 @@ function deleteItem(id, name) {
 
 // ── TRANSACTION CRUD ──
 function openAddTxModal() {
+  document.querySelector('#modal-tx .modal-title').textContent = 'Log Transaction';
+  document.getElementById('tx-edit-id').value = '';
+  document.getElementById('tx-save-btn').textContent = 'Log Transaction';
   ['tx-date','tx-move','tx-dist','tx-qty','tx-given','tx-notes'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = '';
   });
@@ -1328,6 +1708,7 @@ function openAddTxModal() {
 }
 
 async function saveTx() {
+  const editId = document.getElementById('tx-edit-id').value;
   const date = document.getElementById('tx-date').value;
   const move = document.getElementById('tx-move').value;
   const dist = document.getElementById('tx-dist').value;
@@ -1350,13 +1731,14 @@ async function saveTx() {
     if (bad) { document.getElementById(fg)?.classList.add('error'); if(errEl) errEl.textContent=msg; ok=false; }
   });
   if (!ok) return;
-  // Check stock for OUT
+  // Check stock for OUT (exclude current tx from stock calc if editing)
   if (move === 'OUT') {
     const cur = computeStock(itemId);
-    if (qty > cur) {
+    const prevQty = editId ? (allTransactions.find(t=>t.id===editId&&t.movement_type==='OUT'&&t.item_id===itemId)?.qty||0) : 0;
+    if (qty > cur + prevQty) {
       document.getElementById('fg-tx-qty').classList.add('error');
-      document.getElementById('err-tx-qty').textContent = `Not enough stock! Available: ${cur}`;
-      toast(`Insufficient stock! Available: ${cur}`, 'warning');
+      document.getElementById('err-tx-qty').textContent = `Not enough stock! Available: ${cur + prevQty}`;
+      toast(`Insufficient stock! Available: ${cur + prevQty}`, 'warning');
       return;
     }
   }
@@ -1372,13 +1754,25 @@ async function saveTx() {
     date,
     notes: notes||null
   };
-  const { error } = await db.from('transactions').insert(payload);
+  let error;
+  if (editId) {
+    ({ error } = await db.from('transactions').update(payload).eq('id', editId));
+  } else {
+    ({ error } = await db.from('transactions').insert(payload));
+  }
   if (error) { toast('Error: ' + error.message, 'error'); return; }
   closeModal('modal-tx');
-  toast('Transaction logged ✅', 'success');
+  toast(editId ? 'Transaction updated ✅' : 'Transaction logged ✅', 'success');
   await loadTransactions();
   if (currentPage==='dashboard') loadDashboard();
   else if (currentPage==='items') renderItems();
+  else if (currentPage==='item-detail') {
+    const curItem = document.getElementById('detail-item-name');
+    if (curItem) {
+      const itemFromTx = allItems.find(x=>x.id===itemId);
+      if (itemFromTx) viewItem(itemFromTx.id);
+    }
+  }
 }
 
 function deleteTx(id) {
