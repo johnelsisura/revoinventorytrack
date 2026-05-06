@@ -98,7 +98,9 @@ html,body{height:100%;font-family:'Sora',sans-serif;background:var(--bg);color:v
 .nav-item.active{background:rgba(255,215,0,.12);color:var(--gold);font-weight:600}
 .nav-item.active i{color:var(--gold)}
 .nav-item .nav-icon{font-size:15px;flex-shrink:0;width:18px;text-align:center}
-.sidebar-user{padding:14px;border-top:1px solid rgba(255,255,255,.07)}
+.sidebar-greeting{padding:12px 14px 6px;font-size:13px;color:rgba(255,255,255,.85);line-height:1.4}
+.sidebar-greeting strong{color:#fff;font-weight:700}
+.sidebar-user{padding:8px 14px 14px;border-top:1px solid rgba(255,255,255,.07)}
 .sidebar-user-btn{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;cursor:pointer;
   background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);transition:all .18s;width:100%;border:none;font-family:'Sora',sans-serif}
 .sidebar-user-btn:hover{background:rgba(255,255,255,.15)}
@@ -149,14 +151,45 @@ html,body{height:100%;font-family:'Sora',sans-serif;background:var(--bg);color:v
 .page-actions{display:flex;gap:8px;flex-wrap:wrap}
 
 /* ── CARDS ── */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.cards-grid{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:24px}
+@media(max-width:640px){.cards-grid{grid-template-columns:1fr}}
+
+/* Wide stock tile */
 .stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;
-  position:relative;overflow:hidden;transition:transform .2s;box-shadow:var(--shadow)}
-.stat-card:hover{transform:translateY(-2px)}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--maroon)}
-.stat-label{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
-.stat-value{font-family:'Sora',sans-serif;font-size:34px;font-weight:800;color:var(--maroon);line-height:1}
-.stat-sub{font-size:11px;color:var(--text3);margin-top:4px}
+  position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;box-shadow:var(--shadow)}
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.stat-card-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+
+.stat-card--stock-wide{
+  background:linear-gradient(120deg,#fffbe6 0%,#fff 55%);
+  border-color:#fde68a;border-width:1.5px;
+  display:flex;align-items:center;gap:0;
+}
+.stat-card--stock-wide::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-dim))}
+.stat-card-stock-main{display:flex;align-items:center;gap:16px;flex:1;padding-right:28px;border-right:1.5px solid var(--border)}
+.stat-card-stock-main .stat-value{font-family:'Sora',sans-serif;font-size:56px;font-weight:800;line-height:1;color:var(--maroon-dark)}
+.stat-card-stock-main .stat-sub{font-size:12px;margin-top:3px}
+.stat-card-stock-main .stat-label{font-size:11px;margin-bottom:4px}
+.stat-card-stock-side{display:flex;flex-direction:column;gap:0;padding-left:28px;flex-shrink:0;min-width:160px}
+.stat-card-stock-side-item{display:flex;align-items:center;gap:12px;padding:10px 0}
+.stat-card-stock-divider{height:1px;background:var(--border);margin:0}
+
+/* Meta tile (sponsors + items) */
+.stat-card--meta{display:flex;flex-direction:column;gap:0}
+.stat-card--meta::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--maroon)}
+.stat-card-meta-row{display:flex;align-items:center;gap:12px;flex:1;padding:4px 0}
+.stat-card-meta-divider{height:1px;background:var(--border);margin:8px 0}
+.stat-card--meta .stat-value{font-family:'Sora',sans-serif;font-size:28px;font-weight:800;line-height:1}
+
+.stat-tier-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.tier-chip{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.tier-chip-gold{background:#fef3c7;color:#92400e}
+.tier-chip-silver{background:#f1f5f9;color:#475569}
+.tier-chip-bronze{background:#fef3c7;color:#78350f}
+.tier-chip-inkind{background:#ede9fe;color:#5b21b6}
+.stat-value{font-family:'Sora',sans-serif;font-size:32px;font-weight:800;line-height:1}
+.stat-value-sm{font-family:'Sora',sans-serif;font-size:26px;font-weight:800;line-height:1;margin-bottom:2px}
+.stat-sub{font-size:10px;color:var(--text3);margin-top:2px}
 
 /* ── TABLE ── */
 .table-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
@@ -377,26 +410,29 @@ tr:hover td{background:var(--maroon-faint)}
 .info-item label { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 4px; }
 .info-item p { font-size: 14px; color: var(--text); font-weight: 500; }
 
-/* ── STOCK HIERARCHY ── */
-.hier-tier-group { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.hier-tier-header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--bg3); border-bottom: 1px solid var(--border); }
-.hier-sponsor-block { border-bottom: 1px solid var(--border); }
-.hier-sponsor-block:last-child { border-bottom: none; }
-.hier-sponsor-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px 6px; cursor: pointer; transition: background .15s; }
-.hier-sponsor-header:hover { background: var(--maroon-faint); }
-.hier-sponsor-left { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.hier-sponsor-name { font-size: 13px; font-weight: 700; color: var(--maroon-dark); }
-.hier-sponsor-company { font-size: 11px; color: var(--text3); }
-.hier-sponsor-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; margin-left: 10px; }
-.hier-stock-chip { font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
-.hier-progress-bar { height: 4px; background: var(--bg3); margin: 0 16px 0; border-radius: 50px; overflow: hidden; }
-.hier-progress-fill { height: 100%; border-radius: 50px; transition: width .4s; background: var(--maroon); }
-.hier-items-list { padding: 6px 16px 12px; }
-.hier-item-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed var(--border); font-size: 12px; }
-.hier-item-row:last-child { border-bottom: none; }
-.hier-item-name { color: var(--text); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hier-item-stats { display: flex; gap: 10px; flex-shrink: 0; margin-left: 10px; }
-.hier-item-badge { font-size: 11px; font-weight: 600; white-space: nowrap; }
+/* ── DASHBOARD SPONSOR TILES ── */
+.dstile-tier-label { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.dstiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.dstile {
+  background: var(--bg2); border: 1.5px solid var(--border); border-radius: var(--radius);
+  padding: 14px 16px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.dstile::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--tile-accent, var(--maroon)); }
+.dstile:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--tile-accent, var(--maroon)); }
+.dstile-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 2px; gap: 8px; }
+.dstile-name { font-size: 13px; font-weight: 700; color: var(--maroon-dark); line-height: 1.3; }
+.dstile-company { font-size: 11px; color: var(--text3); margin-bottom: 10px; }
+.dstile-stock-badge { font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.dstile-progress { height: 4px; background: var(--bg3); border-radius: 50px; overflow: hidden; margin-bottom: 4px; }
+.dstile-progress-fill { height: 100%; border-radius: 50px; background: var(--tile-accent, var(--maroon)); transition: width .4s; }
+.dstile-progress-fill.complete { background: var(--success); }
+.dstile-progress-fill.partial { background: var(--warning); }
+.dstile-pct { font-size: 10px; color: var(--text3); margin-bottom: 10px; }
+.dstile-items { border-top: 1px dashed var(--border); padding-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.dstile-item { display: flex; align-items: flex-start; gap: 6px; font-size: 11px; }
+.dstile-item-name { flex: 1; color: var(--text2); line-height: 1.3; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dstile-item-stock { font-weight: 700; color: var(--maroon); flex-shrink: 0; font-size: 11px; }
 
 /* ── ITEM DETAIL PAGE ── */
 #page-item-detail { display: none; }
@@ -492,12 +528,14 @@ tr:hover td{background:var(--maroon-faint)}
       </div>
     </div>
     <div class="sidebar-user">
+      <div class="sidebar-greeting" id="sidebar-greeting">Welcome!</div>
       <button class="sidebar-user-btn" onclick="openProfileModal()">
         <div class="user-avatar" id="sidebar-avatar">?</div>
         <div class="user-info">
           <div class="user-name" id="sidebar-uname">—</div>
           <div class="user-pos" id="sidebar-upos">—</div>
         </div>
+        <i class="fas fa-pen" style="font-size:10px;color:rgba(255,255,255,.35);margin-left:auto"></i>
       </button>
     </div>
   </nav>
@@ -527,15 +565,60 @@ tr:hover td{background:var(--maroon-faint)}
           </div>
         </div>
         <div class="cards-grid" id="dash-cards">
-          <div class="stat-card"><div class="stat-label">Total Sponsors</div><div class="stat-value" id="d-sponsors">—</div></div>
-          <div class="stat-card"><div class="stat-label">Total Items</div><div class="stat-value" id="d-items">—</div></div>
-          <div class="stat-card"><div class="stat-label">Total IN</div><div class="stat-value" id="d-in" style="color:var(--success)">—</div></div>
-          <div class="stat-card"><div class="stat-label">Total OUT</div><div class="stat-value" id="d-out" style="color:var(--danger)">—</div></div>
-          <div class="stat-card"><div class="stat-label">Overall Stock</div><div class="stat-value" id="d-stock">—</div><div class="stat-sub" id="d-stock-sub"></div></div>
+          <!-- Wide Stock Tile -->
+          <div class="stat-card stat-card--stock-wide">
+            <div class="stat-card-stock-main">
+              <div class="stat-card-icon" style="background:#fef9c3;color:var(--gold-dim)"><i class="fas fa-warehouse"></i></div>
+              <div>
+                <div class="stat-label">Current Stock</div>
+                <div class="stat-value" id="d-stock" style="color:var(--maroon-dark)">—</div>
+                <div class="stat-sub" id="d-stock-sub"></div>
+              </div>
+            </div>
+            <div class="stat-card-stock-side">
+              <div class="stat-card-stock-side-item">
+                <div class="stat-card-icon" style="background:#dcfce7;color:var(--success);width:28px;height:28px;font-size:12px"><i class="fas fa-arrow-down"></i></div>
+                <div>
+                  <div class="stat-label">Total IN</div>
+                  <div class="stat-value-sm" id="d-in" style="color:var(--success)">—</div>
+                  <div class="stat-sub">units received</div>
+                </div>
+              </div>
+              <div class="stat-card-stock-divider"></div>
+              <div class="stat-card-stock-side-item">
+                <div class="stat-card-icon" style="background:#fee2e2;color:var(--danger);width:28px;height:28px;font-size:12px"><i class="fas fa-arrow-up"></i></div>
+                <div>
+                  <div class="stat-label">Total OUT</div>
+                  <div class="stat-value-sm" id="d-out" style="color:var(--danger)">—</div>
+                  <div class="stat-sub">units distributed</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Sponsors + Items tile -->
+          <div class="stat-card stat-card--meta">
+            <div class="stat-card-meta-row">
+              <div class="stat-card-icon" style="background:var(--maroon-faint);color:var(--maroon)"><i class="fas fa-handshake"></i></div>
+              <div style="flex:1;min-width:0">
+                <div class="stat-label">Sponsors</div>
+                <div class="stat-value" id="d-sponsors" style="color:var(--maroon)">—</div>
+                <div class="stat-tier-chips" id="d-sponsor-tiers"></div>
+              </div>
+            </div>
+            <div class="stat-card-meta-divider"></div>
+            <div class="stat-card-meta-row">
+              <div class="stat-card-icon" style="background:#f1f5f9;color:#475569"><i class="fas fa-box"></i></div>
+              <div style="flex:1;min-width:0">
+                <div class="stat-label">Items</div>
+                <div class="stat-value" id="d-items" style="color:#334155">—</div>
+                <div class="stat-tier-chips" id="d-item-tiers"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- STOCK HIERARCHY -->
+        <!-- STOCK BY SPONSOR TILES -->
         <div class="dash-section" style="margin-bottom:18px">
-          <div class="section-title"><i class="fas fa-layer-group" style="color:var(--maroon)"></i> Stock by Sponsor &amp; Item</div>
+          <div class="section-title"><i class="fas fa-layer-group" style="color:var(--maroon)"></i> Stock by Sponsor</div>
           <div id="dash-stock-hierarchy"></div>
         </div>
         <div class="dash-grid">
@@ -1005,6 +1088,10 @@ function updateSidebarUser() {
   document.getElementById('sidebar-uname').textContent = currentUser.username;
   document.getElementById('sidebar-upos').textContent = currentUser.position || 'Member';
   document.getElementById('sidebar-avatar').textContent = (currentUser.username||'?')[0].toUpperCase();
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning,' : hour < 17 ? 'Good afternoon,' : 'Good evening,';
+  const greetEl = document.getElementById('sidebar-greeting');
+  if (greetEl) greetEl.innerHTML = `<span style="opacity:.6">${greeting}</span><br><strong>${esc(currentUser.username)}</strong>`;
 }
 
 // ── NAVIGATION ──
@@ -1084,6 +1171,27 @@ async function loadDashboard() {
   document.getElementById('d-out').textContent = totalOut;
   document.getElementById('d-stock').textContent = currentStock;
   document.getElementById('d-stock-sub').textContent = totalIn > 0 ? `${totalOut} given out` : '';
+
+  // Tier chips for sponsors
+  const tierDefs = [
+    { key:'Gold', icon:'🥇', cls:'tier-chip-gold' },
+    { key:'Silver', icon:'🥈', cls:'tier-chip-silver' },
+    { key:'Bronze', icon:'🥉', cls:'tier-chip-bronze' },
+    { key:'In-Kind', icon:'🎁', cls:'tier-chip-inkind' },
+  ];
+  const sTiers = document.getElementById('d-sponsor-tiers');
+  if (sTiers) sTiers.innerHTML = tierDefs.map(t => {
+    const n = allSponsors.filter(s => s.tier === t.key).length;
+    return n ? `<span class="tier-chip ${t.cls}">${t.icon} ${n} ${t.key}</span>` : '';
+  }).join('');
+
+  // Tier chips for items (via sponsor tier)
+  const iTiers = document.getElementById('d-item-tiers');
+  if (iTiers) iTiers.innerHTML = tierDefs.map(t => {
+    const sponsorIds = allSponsors.filter(s => s.tier === t.key).map(s => s.id);
+    const n = allItems.filter(i => sponsorIds.includes(i.sponsor_id)).length;
+    return n ? `<span class="tier-chip ${t.cls}">${t.icon} ${n} ${t.key}</span>` : '';
+  }).join('');
   renderTxFeed();
   renderStockHierarchy();
   renderInsights(totalIn, totalOut, currentStock);
@@ -1300,75 +1408,60 @@ function renderStockHierarchy() {
   if (!allSponsors.length) { el.innerHTML = `<div class="empty-state" style="padding:20px"><div class="empty-sub">No sponsors yet</div></div>`; return; }
 
   const tiers = [
-    { key: 'Gold',    icon: '🥇', cls: 'tier-gold',   color: '#92400e' },
-    { key: 'Silver',  icon: '🥈', cls: 'tier-silver',  color: '#475569' },
-    { key: 'Bronze',  icon: '🥉', cls: 'tier-bronze',  color: '#78350f' },
-    { key: 'In-Kind', icon: '🎁', cls: 'tier-inkind',  color: '#5b21b6' },
+    { key: 'Gold',    icon: '🥇', cls: 'tier-gold',   accent: '#f59e0b' },
+    { key: 'Silver',  icon: '🥈', cls: 'tier-silver',  accent: '#94a3b8' },
+    { key: 'Bronze',  icon: '🥉', cls: 'tier-bronze',  accent: '#cd7f32' },
+    { key: 'In-Kind', icon: '🎁', cls: 'tier-inkind',  accent: '#a78bfa' },
   ];
 
   let html = '';
-  tiers.forEach(({ key, icon, cls, color }) => {
+  tiers.forEach(({ key, icon, cls, accent }) => {
     const group = allSponsors.filter(s => s.tier === key);
     if (!group.length) return;
 
-    let sponsorRows = '';
-    group.forEach(s => {
+    const tilesHtml = group.map(s => {
       const sponsorItems = allItems.filter(i => i.sponsor_id === s.id);
-      const sponsorStock = sponsorItems.reduce((sum,i) => sum + computeStock(i.id), 0);
-      const sponsorReceived = sponsorItems.reduce((sum,i) => sum + allTransactions.filter(t=>t.item_id===i.id&&t.movement_type==='IN').reduce((a,t)=>a+t.qty,0), 0);
-      const sponsorTotal = sponsorItems.reduce((sum,i) => sum + (i.total_qty||0), 0);
-      const pct = sponsorTotal > 0 ? Math.min(100, Math.round(sponsorReceived/sponsorTotal*100)) : 0;
+      const received = sponsorItems.reduce((sum,i) => sum + allTransactions.filter(t=>t.item_id===i.id&&t.movement_type==='IN').reduce((a,t)=>a+t.qty,0), 0);
+      const out = sponsorItems.reduce((sum,i) => sum + allTransactions.filter(t=>t.item_id===i.id&&t.movement_type==='OUT').reduce((a,t)=>a+t.qty,0), 0);
+      const stock = received - out;
+      const total = sponsorItems.reduce((sum,i) => sum + (i.total_qty||0), 0);
+      const pct = total > 0 ? Math.min(100, Math.round(received/total*100)) : 0;
       const fillCls = pct>=100?'complete':pct>0?'partial':'';
 
-      // Item rows
-      const itemRows = sponsorItems.map(item => {
+      // Per-item mini rows
+      const itemMinis = sponsorItems.map(item => {
         const iIn = allTransactions.filter(t=>t.item_id===item.id&&t.movement_type==='IN').reduce((s,t)=>s+t.qty,0);
         const iOut = allTransactions.filter(t=>t.item_id===item.id&&t.movement_type==='OUT').reduce((s,t)=>s+t.qty,0);
         const iCur = iIn - iOut;
-        const iTotal = item.total_qty || 0;
-        const iStatus = iCur >= iTotal && iTotal > 0 ? 'complete' : iCur > 0 ? 'partial' : 'pending';
-        const iStatusColor = { complete: 'var(--success)', partial: 'var(--warning)', pending: 'var(--danger)' }[iStatus];
-        return `<div class="hier-item-row">
-          <div class="hier-item-name">
-            <span style="color:var(--text3);margin-right:4px">└</span>
-            ${esc(item.name)}${item.variant ? ` <span style="color:var(--text3);font-size:11px">(${esc(item.variant)})</span>` : ''}
-          </div>
-          <div class="hier-item-stats">
-            <span class="hier-item-badge" style="color:var(--success)">IN: ${iIn}</span>
-            <span class="hier-item-badge" style="color:var(--danger)">OUT: ${iOut}</span>
-            <span class="hier-item-badge" style="color:${iStatusColor};font-weight:700">Stock: ${iCur}/${iTotal}</span>
-          </div>
+        const dot = iCur >= (item.total_qty||0) && (item.total_qty||0)>0 ? '#16a34a' : iCur>0 ? '#d97706' : '#dc2626';
+        return `<div class="dstile-item">
+          <span style="width:6px;height:6px;border-radius:50%;background:${dot};flex-shrink:0;display:inline-block;margin-top:3px"></span>
+          <span class="dstile-item-name">${esc(item.name)}${item.variant?` <span style="color:var(--text3)">(${esc(item.variant)})</span>`:''}</span>
+          <span class="dstile-item-stock">${iCur}<span style="color:var(--text3);font-weight:400">/${item.total_qty||0}</span></span>
         </div>`;
-      }).join('') || `<div class="hier-item-row" style="color:var(--text3);font-style:italic;padding-left:20px;font-size:12px">No items linked</div>`;
+      }).join('') || `<div style="font-size:11px;color:var(--text3);font-style:italic;padding:4px 0">No items linked</div>`;
 
-      sponsorRows += `<div class="hier-sponsor-block">
-        <div class="hier-sponsor-header" onclick="viewSponsor('${s.id}')">
-          <div class="hier-sponsor-left">
-            <span class="hier-sponsor-name">${esc(s.name)}</span>
-            ${s.company ? `<span class="hier-sponsor-company">${esc(s.company)}</span>` : ''}
-          </div>
-          <div class="hier-sponsor-right">
-            <span class="hier-stock-chip" style="color:${sponsorStock>0?'var(--success)':'var(--text3)'}">
-              <i class="fas fa-box" style="font-size:10px"></i> ${sponsorStock} in stock
-            </span>
-            <span class="hier-stock-chip" style="color:var(--text2)">${sponsorReceived}/${sponsorTotal} rcvd</span>
-            <i class="fas fa-chevron-right" style="font-size:11px;color:var(--text3)"></i>
+      return `<div class="dstile" onclick="viewSponsor('${s.id}')" style="--tile-accent:${accent}">
+        <div class="dstile-top">
+          <div class="dstile-name">${esc(s.name)}</div>
+          <div class="dstile-stock-badge" style="color:${stock>0?'var(--success)':'var(--text3)'}">
+            <i class="fas fa-warehouse" style="font-size:9px"></i> ${stock}
           </div>
         </div>
-        <div class="hier-progress-bar">
-          <div class="hier-progress-fill progress-fill ${fillCls}" style="width:${pct}%"></div>
-        </div>
-        <div class="hier-items-list">${itemRows}</div>
+        ${s.company ? `<div class="dstile-company">${esc(s.company)}</div>` : ''}
+        <div class="dstile-progress"><div class="dstile-progress-fill ${fillCls}" style="width:${pct}%"></div></div>
+        <div class="dstile-pct">${pct}% received · ${received}/${total}</div>
+        <div class="dstile-items">${itemMinis}</div>
       </div>`;
-    });
+    }).join('');
 
-    html += `<div class="hier-tier-group ${cls}" style="margin-bottom:20px">
-      <div class="hier-tier-header">
+    html += `<div style="margin-bottom:18px">
+      <div class="dstile-tier-label">
         <span>${icon}</span>
-        <span style="font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:${color}">${key} Sponsors</span>
-        <span style="margin-left:auto;font-size:11px;color:var(--text3)">${group.length} sponsor${group.length!==1?'s':''}</span>
+        <span style="color:${accent};font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.8px">${key}</span>
+        <span style="color:var(--text3);font-size:11px">${group.length} sponsor${group.length!==1?'s':''}</span>
       </div>
-      ${sponsorRows}
+      <div class="dstiles-grid">${tilesHtml}</div>
     </div>`;
   });
 
