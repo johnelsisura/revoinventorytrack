@@ -74,6 +74,10 @@ html,body{height:100%;font-family:'Sora',sans-serif;background:var(--bg);color:v
 .btn-gold:hover{background:var(--gold-dim)}
 .btn-ghost{background:transparent;color:var(--text2);border:1.5px solid var(--border)}
 .btn-ghost:hover{border-color:var(--maroon);color:var(--maroon)}
+.btn-edit{background:#fffbe6;color:#b45309;border:1.5px solid #fde68a}
+.btn-edit:hover{background:#fef3c7;border-color:#f59e0b;color:#92400e;transform:translateY(-1px)}
+.btn-delete{background:#fff0f0;color:var(--danger);border:1.5px solid #fecaca}
+.btn-delete:hover{background:#fee2e2;border-color:var(--danger);transform:translateY(-1px)}
 .btn-danger{background:var(--danger);color:#fff}
 .btn-danger:hover{background:#b91c1c}
 .btn-sm{padding:7px 14px;font-size:12px}
@@ -199,6 +203,8 @@ th{background:var(--bg3);padding:13px 16px;text-align:left;font-size:11px;font-w
 td{padding:13px 16px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--maroon-faint)}
+tr:hover td .btn-edit{background:#fffbe6}
+tr:hover td .btn-delete{background:#fff0f0}
 .subtotal-row td{background:#f9f6f3;font-weight:700;color:var(--maroon-dark);font-size:12px;border-top:1px dashed var(--border)}
 .total-row td{background:var(--maroon-faint);font-weight:700;font-size:13px;color:var(--maroon-dark);border-top:2px solid var(--maroon)}
 .table-actions{display:flex;gap:5px}
@@ -359,7 +365,7 @@ tr:hover td{background:var(--maroon-faint)}
   background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
   padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px;
 }
-.insight-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+.insight-icon { width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:1px; }
 .insight-text { font-size: 12px; color: var(--text2); line-height: 1.5; }
 .insight-text strong { color: var(--maroon-dark); display: block; margin-bottom: 2px; font-size: 13px; }
 
@@ -405,6 +411,19 @@ tr:hover td{background:var(--maroon-faint)}
 .text-sm { font-size: 12px; }
 .text-muted { color: var(--text3); }
 .mono { font-family: monospace; }
+/* ── NUMBER COLUMNS standout ── */
+td.mono {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+  color: var(--text);
+}
+td.num-received {
+  color: var(--success) !important;
+}
+td.num-stock {
+  font-size: 16px;
+}
 .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
 .info-item label { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 4px; }
@@ -449,6 +468,31 @@ tr:hover td{background:var(--maroon-faint)}
 /* ── TRANSACTION EDIT ── */
 .tx-edit-row { background: var(--gold-faint) !important; }
 
+/* ── COLOR-CODED ROWS ── */
+tr.row-complete td { background: #f0fdf4 !important; }
+tr.row-complete:hover td { background: #dcfce7 !important; }
+tr.row-partial td { background: #fffbeb !important; }
+tr.row-partial:hover td { background: #fef3c7 !important; }
+tr.row-pending td { background: #fff5f5 !important; }
+tr.row-pending:hover td { background: #fee2e2 !important; }
+tr.row-complete td .btn-edit, tr.row-partial td .btn-edit, tr.row-pending td .btn-edit { background: #fffbe6; }
+tr.row-complete td .btn-delete, tr.row-partial td .btn-delete, tr.row-pending td .btn-delete { background: #fff0f0; }
+
+/* ── ITEMS STATS BAR ── */
+.items-stats-bar { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:stretch; }
+.items-stat-pill { display:flex; align-items:center; gap:12px; padding:14px 20px; border-radius:var(--radius); border:1.5px solid var(--border); background:var(--bg2); box-shadow:var(--shadow); flex:1; min-width:120px; }
+.items-stat-icon { font-size:22px; flex-shrink:0; }
+.items-stat-num { font-family:'Sora',sans-serif; font-size:22px; font-weight:800; line-height:1; }
+.items-stat-lbl { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:.6px; margin-top:3px; }
+.items-stat-complete { border-color:#86efac; background:#f0fdf4; }
+.items-stat-complete .items-stat-num { color:#15803d; }
+.items-stat-partial { border-color:#fde68a; background:#fffbeb; }
+.items-stat-partial .items-stat-num { color:#92400e; }
+.items-stat-pending { border-color:#fca5a5; background:#fff5f5; }
+.items-stat-pending .items-stat-num { color:#b91c1c; }
+.items-stat-value { border-color:#c4b5fd; background:#f5f3ff; margin-left:auto; }
+.items-stat-value .items-stat-num { color:#5b21b6; font-size:18px; }
+
 </style>
 </head>
 <body>
@@ -486,6 +530,11 @@ tr:hover td{background:var(--maroon-faint)}
         <label>Username *</label>
         <input type="text" id="su-username" placeholder="Choose a username"/>
         <div class="form-error" id="err-su-user"></div>
+      </div>
+      <div class="form-group" id="fg-su-name">
+        <label>Full Name *</label>
+        <input type="text" id="su-name" placeholder="e.g. Juan dela Cruz"/>
+        <div class="form-error" id="err-su-name"></div>
       </div>
       <div class="form-group" id="fg-su-pin">
         <label>PIN * (4–6 digits)</label>
@@ -559,9 +608,9 @@ tr:hover td{background:var(--maroon-faint)}
         <div class="page-header">
           <div class="page-title">Dashboard</div>
           <div class="page-actions">
-            <button class="btn btn-primary btn-sm" onclick="openAddSponsorModal()">+ Sponsor</button>
-            <button class="btn btn-gold btn-sm" style="color:var(--maroon)" onclick="openAddItemModal()">+ Item</button>
-            <button class="btn btn-ghost btn-sm" onclick="openAddTxModal()">+ Transaction</button>
+            <button class="btn btn-primary btn-sm" onclick="openAddSponsorModal()"><i class="fas fa-plus"></i> Sponsor</button>
+            <button class="btn btn-gold btn-sm" style="color:var(--maroon)" onclick="openAddItemModal()"><i class="fas fa-plus"></i> Item</button>
+            <button class="btn btn-ghost btn-sm" onclick="openAddTxModal()"><i class="fas fa-plus"></i> Transaction</button>
           </div>
         </div>
         <div class="cards-grid" id="dash-cards">
@@ -642,7 +691,7 @@ tr:hover td{background:var(--maroon-faint)}
         <div class="page-header">
           <div class="page-title">Sponsors</div>
           <div class="page-actions">
-            <button class="btn btn-primary" onclick="openAddSponsorModal()">+ Add Sponsor</button>
+            <button class="btn btn-primary" onclick="openAddSponsorModal()"><i class="fas fa-plus"></i> Add Sponsor</button>
           </div>
         </div>
         <div id="sponsors-list"></div>
@@ -662,9 +711,9 @@ tr:hover td{background:var(--maroon-faint)}
         <div class="page-header">
           <div class="page-title">Items</div>
           <div class="page-actions">
-            <button class="btn btn-ghost btn-sm" onclick="exportItemsCSV()">⬇ Export CSV</button>
-            <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Print</button>
-            <button class="btn btn-primary" onclick="openAddItemModal()">+ Add Item</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportItemsCSV()"><i class="fas fa-download"></i> Export CSV</button>
+            <button class="btn btn-ghost btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+            <button class="btn btn-primary" onclick="openAddItemModal()"><i class="fas fa-plus"></i> Add Item</button>
           </div>
         </div>
         <div id="items-list"></div>
@@ -684,8 +733,8 @@ tr:hover td{background:var(--maroon-faint)}
         <div class="page-header">
           <div class="page-title">Transactions</div>
           <div class="page-actions">
-            <button class="btn btn-ghost btn-sm" onclick="exportTxCSV()">⬇ Export CSV</button>
-            <button class="btn btn-primary" onclick="openAddTxModal()">+ Log Transaction</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportTxCSV()"><i class="fas fa-download"></i> Export CSV</button>
+            <button class="btn btn-primary" onclick="openAddTxModal()"><i class="fas fa-plus"></i> Log Transaction</button>
           </div>
         </div>
         <div class="filters-row">
@@ -720,7 +769,7 @@ tr:hover td{background:var(--maroon-faint)}
 <!-- CONFIRM -->
 <div id="confirm-overlay">
   <div class="confirm-box">
-    <div class="confirm-icon" id="confirm-icon">⚠️</div>
+    <div class="confirm-icon" id="confirm-icon"><i class="fas fa-triangle-exclamation"></i></div>
     <div class="confirm-title" id="confirm-title">Are you sure?</div>
     <div class="confirm-msg" id="confirm-msg"></div>
     <div class="confirm-btns">
@@ -814,6 +863,10 @@ tr:hover td{background:var(--maroon-faint)}
         <input type="number" id="it-qty" placeholder="0" min="0"/>
         <div class="form-error" id="err-it-qty"></div>
       </div>
+      <div class="form-group">
+        <label>Unit Value (₱) <span style="color:var(--text3);font-weight:400;text-transform:none;letter-spacing:0">— optional</span></label>
+        <input type="number" id="it-unit-value" placeholder="0.00" min="0" step="0.01"/>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-item')">Cancel</button>
@@ -840,8 +893,8 @@ tr:hover td{background:var(--maroon-faint)}
         <label>Movement *</label>
         <select id="tx-move">
           <option value="">Select…</option>
-          <option value="IN">📥 IN — Item Received</option>
-          <option value="OUT">📤 OUT — Item Given Out</option>
+          <option value="IN">↓ IN — Item Received</option>
+          <option value="OUT">↑ OUT — Item Given Out</option>
         </select>
         <div class="form-error" id="err-tx-move"></div>
       </div>
@@ -900,6 +953,10 @@ tr:hover td{background:var(--maroon-faint)}
         <input type="text" id="pf-username"/>
         <div class="form-error" id="err-pf-user"></div>
       </div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="pf-name" placeholder="e.g. Juan dela Cruz"/>
+      </div>
       <div class="form-group" id="fg-pf-pin">
         <label>New PIN (4–6 digits, leave blank to keep)</label>
         <input type="password" id="pf-pin" maxlength="6" inputmode="numeric" placeholder="Leave blank to keep current PIN"/>
@@ -947,30 +1004,35 @@ function tierBadge(tier) {
   const map = { Gold:'badge-gold', Silver:'badge-silver', Bronze:'badge-bronze', 'In-Kind':'badge-inkind' };
   return tier ? `<span class="badge ${map[tier]||''}">${tier}</span>` : '';
 }
-function statusBadge(cur, tot) {
-  if (cur >= tot && tot > 0) return '<span class="badge badge-complete">🟢 Complete</span>';
-  if (cur > 0) return '<span class="badge badge-partial">🟡 Partial</span>';
-  return '<span class="badge badge-pending">🔴 Pending</span>';
+function statusBadge(received, tot) {
+  if (received >= tot && tot > 0) return '<span class="badge badge-complete"><i class="fas fa-circle-check"></i> Complete</span>';
+  if (received > 0) return '<span class="badge badge-partial"><i class="fas fa-circle-half-stroke"></i> Partial</span>';
+  return '<span class="badge badge-pending"><i class="fas fa-circle-xmark"></i> Pending</span>';
 }
 function moveBadge(m) {
   return m === 'IN'
-    ? '<span class="badge badge-in">📥 IN</span>'
-    : '<span class="badge badge-out">📤 OUT</span>';
+    ? '<span class="badge badge-in"><i class="fas fa-arrow-down"></i> IN</span>'
+    : '<span class="badge badge-out"><i class="fas fa-arrow-up"></i> OUT</span>';
 }
 
 // ── TOAST ──
 function toast(msg, type='info') {
   const el = document.createElement('div');
   el.className = `toast ${type}`;
-  const icons = { success:'✅', error:'❌', warning:'⚠️', info:'ℹ️' };
-  el.innerHTML = `<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
+  const icons = {
+    success: '<i class="fas fa-circle-check"></i>',
+    error:   '<i class="fas fa-circle-xmark"></i>',
+    warning: '<i class="fas fa-triangle-exclamation"></i>',
+    info:    '<i class="fas fa-circle-info"></i>'
+  };
+  el.innerHTML = `<span>${icons[type]||icons.info}</span><span>${msg}</span>`;
   document.getElementById('toast-container').appendChild(el);
   setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 300); }, 3000);
 }
 
 // ── CONFIRM ──
 let confirmCb = null;
-function confirm2(title, msg, cb, icon='⚠️') {
+function confirm2(title, msg, cb, icon='<i class="fas fa-triangle-exclamation"></i>') {
   document.getElementById('confirm-icon').textContent = icon;
   document.getElementById('confirm-title').textContent = title;
   document.getElementById('confirm-msg').textContent = msg;
@@ -1026,9 +1088,11 @@ async function doSignup() {
   const pin = document.getElementById('su-pin').value.trim();
   const pos = document.getElementById('su-position').value.trim();
   let ok = true;
-  ['fg-su-user','fg-su-pin'].forEach(id => document.getElementById(id).classList.remove('error'));
-  ['err-su-user','err-su-pin','err-su-global'].forEach(id => document.getElementById(id).textContent = '');
+  ['fg-su-user','fg-su-pin','fg-su-name'].forEach(id => { const el=document.getElementById(id); if(el) el.classList.remove('error'); });
+  ['err-su-user','err-su-pin','err-su-global','err-su-name'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=''; });
   if (!uname) { document.getElementById('fg-su-user').classList.add('error'); document.getElementById('err-su-user').textContent = 'Required'; ok = false; }
+  const suName = document.getElementById('su-name').value.trim();
+  if (!suName) { document.getElementById('fg-su-name').classList.add('error'); document.getElementById('err-su-name').textContent = 'Required'; ok = false; }
   if (!pin || pin.length < 4) { document.getElementById('fg-su-pin').classList.add('error'); document.getElementById('err-su-pin').textContent = 'PIN must be 4–6 digits'; ok = false; }
   if (pin && !/^\d+$/.test(pin)) { document.getElementById('fg-su-pin').classList.add('error'); document.getElementById('err-su-pin').textContent = 'Digits only'; ok = false; }
   if (!ok) return;
@@ -1041,7 +1105,7 @@ async function doSignup() {
       document.getElementById('fg-su-user').classList.add('error');
       btn.disabled = false; btn.textContent = 'Create Account'; return;
     }
-    const { data: users, error } = await db.from('users').insert({ username: uname, pin, position: pos || null }).select();
+    const { data: users, error } = await db.from('users').insert({ username: uname, pin, position: pos || null, name: document.getElementById('su-name').value.trim() || null }).select();
     if (error) throw error;
     const user = users[0];
     const token = crypto.randomUUID();
@@ -1085,13 +1149,13 @@ async function initApp(user) {
 
 function updateSidebarUser() {
   if (!currentUser) return;
-  document.getElementById('sidebar-uname').textContent = currentUser.username;
+  document.getElementById('sidebar-uname').textContent = currentUser.name || currentUser.username;
   document.getElementById('sidebar-upos').textContent = currentUser.position || 'Member';
-  document.getElementById('sidebar-avatar').textContent = (currentUser.username||'?')[0].toUpperCase();
+  document.getElementById('sidebar-avatar').textContent = ((currentUser.name || currentUser.username)||'?')[0].toUpperCase();
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning,' : hour < 17 ? 'Good afternoon,' : 'Good evening,';
   const greetEl = document.getElementById('sidebar-greeting');
-  if (greetEl) greetEl.innerHTML = `<span style="opacity:.6">${greeting}</span><br><strong>${esc(currentUser.username)}</strong>`;
+  if (greetEl) greetEl.innerHTML = `<span style="opacity:.6">${greeting}</span><br><strong>${esc(currentUser.name || currentUser.username)}</strong>`;
 }
 
 // ── NAVIGATION ──
@@ -1198,18 +1262,32 @@ async function loadDashboard() {
 }
 
 async function loadTeam() {
-  const { data, error } = await db.from('users').select('id,username,position,created_at').order('created_at');
+  const { data, error } = await db.from('users').select('id,username,name,position,created_at').order('created_at');
   if (error) { toast('Failed to load team', 'error'); return; }
   const el = document.getElementById('team-list');
   if (!data || !data.length) { el.innerHTML = emptyState('👥','No team members yet','Sign up to appear here'); return; }
   el.innerHTML = `<div class="table-wrap"><table>
-    <thead><tr><th>Username</th><th>Position</th><th>Date Joined</th></tr></thead>
-    <tbody>${data.map(u => `
-      <tr>
-        <td><strong>${esc(u.username)}</strong>${u.id===currentUser?.id?' <span class="badge badge-gold" style="font-size:10px">You</span>':''}</td>
-        <td>${esc(u.position||'—')}</td>
-        <td class="text-muted">${manilaDate(u.created_at)}</td>
-      </tr>`).join('')}
+    <thead><tr><th>Member</th><th>Position</th><th>Date Joined</th><th>Contact</th></tr></thead>
+    <tbody>${data.map(u => {
+      const displayName = u.name || u.username;
+      const isMe = u.id === currentUser?.id;
+      const avatarLetter = (u.name || u.username || '?')[0].toUpperCase();
+      const msgLink = `sms:?body=${encodeURIComponent('Hi ' + displayName + '! — PUP REVO 2026')}`;
+      return `<tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:34px;height:34px;background:${isMe?'var(--gold)':'var(--maroon-faint)'};border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:${isMe?'var(--maroon-dark)':'var(--maroon)'};flex-shrink:0">${avatarLetter}</div>
+            <div>
+              <div style="font-weight:700;font-size:13px">${esc(displayName)}${isMe?' <span class="badge badge-gold" style="font-size:9px">You</span>':''}</div>
+              <div style="font-size:11px;color:var(--text3)">@${esc(u.username)}</div>
+            </div>
+          </div>
+        </td>
+        <td class="text-sm">${esc(u.position||'—')}</td>
+        <td class="text-muted text-sm">${manilaDate(u.created_at)}</td>
+        <td>${isMe ? '<span style="font-size:11px;color:var(--text3)">—</span>' : `<a href="${msgLink}" class="btn btn-ghost btn-sm" style="text-decoration:none;font-size:11px"><i class="fas fa-comment-sms"></i> Message</a>`}</td>
+      </tr>`;
+    }).join('')}
     </tbody>
   </table></div>`;
 }
@@ -1220,6 +1298,9 @@ function computeStock(itemId) {
   const inQty = txs.filter(t => t.movement_type === 'IN').reduce((s,t) => s + t.qty, 0);
   const outQty = txs.filter(t => t.movement_type === 'OUT').reduce((s,t) => s + t.qty, 0);
   return inQty - outQty;
+}
+function computeReceived(itemId) {
+  return allTransactions.filter(t => t.item_id === itemId && t.movement_type === 'IN').reduce((s,t) => s + t.qty, 0);
 }
 
 // ── RENDER SPONSORS ──
@@ -1271,8 +1352,8 @@ function renderSponsors() {
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <span style="font-size:10px;color:var(--text3)">${pct}% received (${received}/${total})</span>
           <div class="sponsor-tile-actions" onclick="event.stopPropagation()">
-            <button class="btn btn-ghost btn-sm" onclick="editSponsor('${s.id}')">✏️</button>
-            <button class="btn btn-ghost btn-sm" onclick="deleteSponsor('${s.id}','${esc(s.name)}')">🗑️</button>
+            <button class="btn btn-edit btn-sm" onclick="editSponsor('${s.id}')" title="Edit"><i class="fas fa-pen"></i></button>
+            <button class="btn btn-delete btn-sm" onclick="deleteSponsor('${s.id}','${esc(s.name)}')" title="Delete"><i class="fas fa-trash"></i></button>
           </div>
         </div>
       </div>`;
@@ -1300,42 +1381,66 @@ function renderItems() {
     if (!groups[cat]) groups[cat] = [];
     groups[cat].push(item);
   });
-  let grandIn = 0, grandOut = 0, grandTotal = 0;
+  let grandIn = 0, grandOut = 0, grandTotal = 0, grandValue = 0;
+  let totalComplete = 0, totalPartial = 0, totalPending = 0;
   let rows = '';
   Object.keys(groups).sort().forEach(cat => {
     let catIn = 0, catTotal = 0;
-    rows += `<tr class="subtotal-row"><td colspan="8" style="padding:8px 14px;font-size:11px;letter-spacing:.5px;text-transform:uppercase">${esc(cat)}</td></tr>`;
+    rows += `<tr class="subtotal-row"><td colspan="9" style="padding:8px 14px;font-size:11px;letter-spacing:.5px;text-transform:uppercase">${esc(cat)}</td></tr>`;
     groups[cat].forEach(item => {
       const itemIn = allTransactions.filter(t => t.item_id===item.id && t.movement_type==='IN').reduce((s,t) => s+t.qty,0);
       const itemOut = allTransactions.filter(t => t.item_id===item.id && t.movement_type==='OUT').reduce((s,t) => s+t.qty,0);
       const cur = itemIn - itemOut;
       catIn += itemIn; catTotal += item.total_qty || 0;
       grandIn += itemIn; grandOut += itemOut; grandTotal += item.total_qty || 0;
-      rows += `<tr style="cursor:pointer" onclick="viewItem('${item.id}')">
+      grandValue += (item.unit_value||0) * itemIn;
+      if (itemIn >= (item.total_qty||0) && (item.total_qty||0)>0) totalComplete++;
+      else if (itemIn > 0) totalPartial++;
+      else if ((item.total_qty||0)>0) totalPending++;
+      const rowCls = itemIn >= (item.total_qty||0) && (item.total_qty||0)>0 ? 'row-complete' : itemIn > 0 ? 'row-partial' : (item.total_qty||0)>0 ? 'row-pending' : '';
+      rows += `<tr class="${rowCls}" style="cursor:pointer" onclick="viewItem('${item.id}')">
         <td><strong>${esc(item.name)}</strong></td>
         <td class="text-muted text-sm">${esc(item.variant||'—')}</td>
         <td class="text-sm">${esc(item.sponsors?.name||'—')}</td>
         <td class="text-sm text-muted">${esc(item.category||'—')}</td>
         <td class="mono">${item.total_qty||0}</td>
-        <td class="mono" style="color:var(--success);font-weight:700">${itemIn}</td>
-        <td class="mono" style="color:${cur>0?'var(--maroon)':'var(--text3)'};font-weight:700">${cur}</td>
-        <td>${statusBadge(cur, item.total_qty||0)}</td>
+        <td class="mono num-received">${itemIn}</td>
+        <td class="mono num-stock" style="color:${cur>0?'var(--maroon)':cur===0&&itemIn>0?'var(--success)':'var(--text3)'}">${cur}</td>
+        <td>${statusBadge(itemIn, item.total_qty||0)}</td>
         <td><div class="table-actions" onclick="event.stopPropagation()">
-          <button class="btn btn-ghost btn-sm" onclick="editItem('${item.id}')">✏️</button>
-          <button class="btn btn-ghost btn-sm" onclick="deleteItem('${item.id}','${esc(item.name)}')">🗑️</button>
+          <button class="btn btn-edit btn-sm" onclick="editItem('${item.id}')" title="Edit"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-delete btn-sm" onclick="deleteItem('${item.id}','${esc(item.name)}')" title="Delete"><i class="fas fa-trash"></i></button>
         </div></td>
       </tr>`;
     });
   });
   const grandCur = grandIn - grandOut;
-  el.innerHTML = `<div class="table-wrap"><table>
+  const statsHtml = `<div class="items-stats-bar">
+    <div class="items-stat-pill items-stat-complete">
+      <span class="items-stat-icon"><i class="fas fa-circle-check"></i></span>
+      <div><div class="items-stat-num">${totalComplete}</div><div class="items-stat-lbl">Complete</div></div>
+    </div>
+    <div class="items-stat-pill items-stat-partial">
+      <span class="items-stat-icon"><i class="fas fa-circle-half-stroke"></i></span>
+      <div><div class="items-stat-num">${totalPartial}</div><div class="items-stat-lbl">Partial</div></div>
+    </div>
+    <div class="items-stat-pill items-stat-pending">
+      <span class="items-stat-icon"><i class="fas fa-circle-xmark"></i></span>
+      <div><div class="items-stat-num">${totalPending}</div><div class="items-stat-lbl">Pending</div></div>
+    </div>
+    <div class="items-stat-pill items-stat-value" style="margin-left:auto">
+      <span class="items-stat-icon"><i class="fas fa-peso-sign"></i></span>
+      <div><div class="items-stat-num">₱${grandValue.toLocaleString('en-PH',{minimumFractionDigits:0,maximumFractionDigits:0})}</div><div class="items-stat-lbl">Total Value Received</div></div>
+    </div>
+  </div>`;
+  el.innerHTML = statsHtml + `<div class="table-wrap"><table>
     <thead><tr><th>Item</th><th>Variant</th><th>Sponsor</th><th>Category</th><th>Total Qty</th><th>Received</th><th>Current Stock</th><th>Status</th><th>Actions</th></tr></thead>
     <tbody>${rows}
       <tr class="total-row">
         <td colspan="4"><strong>GRAND TOTAL</strong></td>
         <td class="mono"><strong>${grandTotal}</strong></td>
         <td class="mono"><strong>${grandIn}</strong></td>
-        <td></td><td></td>
+        <td></td><td></td><td></td>
       </tr>
     </tbody>
   </table></div>`;
@@ -1359,8 +1464,8 @@ function renderTransactions() {
         <td class="text-sm text-muted">${esc(t.received_by||'—')}</td>
         <td class="text-sm text-muted">${esc(t.notes||'—')}</td>
         <td><div class="table-actions">
-          <button class="btn btn-ghost btn-sm" onclick="editTx('${t.id}')">✏️</button>
-          <button class="btn btn-ghost btn-sm" onclick="deleteTx('${t.id}')">🗑️</button>
+          <button class="btn btn-edit btn-sm" onclick="editTx('${t.id}')" title="Edit"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-delete btn-sm" onclick="deleteTx('${t.id}')" title="Delete"><i class="fas fa-trash"></i></button>
         </div></td>
       </tr>`).join('')}
     </tbody>
@@ -1393,7 +1498,7 @@ function renderTxFeed() {
   if (!recent.length) { el.innerHTML = `<div class="empty-state" style="padding:20px"><div class="empty-sub">No transactions yet</div></div>`; return; }
   el.innerHTML = recent.map(t => `
     <div class="tx-feed-item">
-      <div class="tx-feed-icon ${(t.movement_type||'').toLowerCase()}">${t.movement_type==='IN'?'📥':'📤'}</div>
+      <div class="tx-feed-icon ${(t.movement_type||'').toLowerCase()}">${t.movement_type==='IN'?'<i class="fas fa-arrow-down"></i>':'<i class="fas fa-arrow-up"></i>'}</div>
       <div>
         <div class="tx-feed-title">${esc(t.items?.name||'Unknown')} — ${t.qty} unit${t.qty!==1?'s':''}</div>
         <div class="tx-feed-sub">${esc(t.given_to_or_by||'—')} · ${manilaDate(t.date)}</div>
@@ -1476,38 +1581,37 @@ function renderInsights(totalIn, totalOut, currentStock) {
 
   // Low stock items
   const lowStock = allItems.filter(i => {
-    const cur = computeStock(i.id);
-    return cur > 0 && cur < (i.total_qty||0) * 0.25 && (i.total_qty||0) > 0;
+    const rec = computeReceived(i.id);
+    return rec > 0 && rec < (i.total_qty||0) * 0.25 && (i.total_qty||0) > 0;
   });
   if (lowStock.length) {
-    insights.push({ icon: '⚠️', title: 'Low Stock Alert', text: `${lowStock.length} item${lowStock.length!==1?'s are':' is'} below 25% of expected quantity.` });
+    insights.push({ icon: 'fa-triangle-exclamation', color: '#d97706', bg: '#fef3c7', title: 'Low Stock Alert', text: `${lowStock.length} item${lowStock.length!==1?'s are':' is'} below 25% of expected quantity.` });
   }
 
   // Pending items (zero received)
-  const pending = allItems.filter(i => computeStock(i.id) === 0 && (i.total_qty||0) > 0);
+  const pending = allItems.filter(i => computeReceived(i.id) === 0 && (i.total_qty||0) > 0);
   if (pending.length) {
-    insights.push({ icon: '🔴', title: 'Pending Items', text: `${pending.length} item${pending.length!==1?'s have':' has'} not been received yet.` });
+    insights.push({ icon: 'fa-clock', color: '#dc2626', bg: '#fee2e2', title: 'Pending Items', text: `${pending.length} item${pending.length!==1?'s have':' has'} not been received yet.` });
   }
 
   // Complete items
   const complete = allItems.filter(i => {
-    const cur = computeStock(i.id);
-    return cur >= (i.total_qty||0) && (i.total_qty||0) > 0;
+    return computeReceived(i.id) >= (i.total_qty||0) && (i.total_qty||0) > 0;
   });
   if (complete.length) {
-    insights.push({ icon: '✅', title: 'Fully Stocked', text: `${complete.length} item${complete.length!==1?'s are':' is'} at 100% of expected quantity.` });
+    insights.push({ icon: 'fa-circle-check', color: '#16a34a', bg: '#dcfce7', title: 'Fully Stocked', text: `${complete.length} item${complete.length!==1?'s are':' is'} at 100% of expected quantity.` });
   }
 
   // Distribution rate
   if (totalIn > 0) {
     const distRate = Math.round(totalOut / totalIn * 100);
-    insights.push({ icon: '📤', title: 'Distribution Rate', text: `${distRate}% of received items have been given out (${totalOut} of ${totalIn}).` });
+    insights.push({ icon: 'fa-arrow-up-from-bracket', color: '#8B0000', bg: '#fff0f0', title: 'Distribution Rate', text: `${distRate}% of received items have been given out (${totalOut} of ${totalIn}).` });
   }
 
   // Sponsors without items
   const noItems = allSponsors.filter(s => !allItems.some(i => i.sponsor_id === s.id));
   if (noItems.length) {
-    insights.push({ icon: '🤝', title: 'Sponsors with No Items', text: `${noItems.length} sponsor${noItems.length!==1?'s have':' has'} no items linked yet.` });
+    insights.push({ icon: 'fa-handshake-slash', color: '#6b7280', bg: '#f3f4f6', title: 'Sponsors with No Items', text: `${noItems.length} sponsor${noItems.length!==1?'s have':' has'} no items linked yet.` });
   }
 
   if (!insights.length) {
@@ -1516,7 +1620,7 @@ function renderInsights(totalIn, totalOut, currentStock) {
   }
   el.innerHTML = `<div class="insights-grid">${insights.map(ins => `
     <div class="insight-card">
-      <div class="insight-icon">${ins.icon}</div>
+      <div class="insight-icon" style="background:${ins.bg};color:${ins.color}"><i class="fas ${ins.icon}"></i></div>
       <div class="insight-text"><strong>${ins.title}</strong>${ins.text}</div>
     </div>`).join('')}</div>`;
 }
@@ -1531,6 +1635,10 @@ async function viewSponsor(id) {
   const sponsorTxs = allTransactions.filter(t => t.sponsor_id === id);
   const totalIn = sponsorTxs.filter(t => t.movement_type==='IN').reduce((sum,t) => sum+t.qty,0);
   const totalOut = sponsorTxs.filter(t => t.movement_type==='OUT').reduce((sum,t) => sum+t.qty,0);
+  const sponsorValue = sponsorItems.reduce((sum, i) => {
+    const received = allTransactions.filter(t=>t.item_id===i.id&&t.movement_type==='IN').reduce((s,t)=>s+t.qty,0);
+    return sum + (i.unit_value||0) * received;
+  }, 0);
   document.getElementById('detail-sponsor-body').innerHTML = `
     <div class="info-grid">
       <div class="info-item"><label>Company</label><p>${esc(s.company||'—')}</p></div>
@@ -1540,9 +1648,15 @@ async function viewSponsor(id) {
       <div class="info-item"><label>Email</label><p>${esc(s.email||'—')}</p></div>
       <div class="info-item"><label>Notes</label><p>${esc(s.notes||'—')}</p></div>
     </div>
+    ${sponsorValue > 0 ? `<div class="items-stats-bar" style="margin-bottom:16px">
+      <div class="items-stat-pill items-stat-value">
+        <span class="items-stat-icon"><i class="fas fa-peso-sign"></i></span>
+        <div><div class="items-stat-num">₱${sponsorValue.toLocaleString('en-PH',{minimumFractionDigits:0,maximumFractionDigits:0})}</div><div class="items-stat-lbl">Total Value from Sponsor</div></div>
+      </div>
+    </div>` : ''}
     <div style="display:flex;gap:8px;margin-bottom:20px">
-      <button class="btn btn-ghost btn-sm" onclick="editSponsor('${s.id}')">✏️ Edit</button>
-      <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteSponsor('${s.id}','${esc(s.name)}')">🗑️ Delete</button>
+      <button class="btn btn-ghost btn-sm" onclick="editSponsor('${s.id}')"><i class="fas fa-pen"></i> Edit</button>
+      <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteSponsor('${s.id}','${esc(s.name)}')"><i class="fas fa-trash"></i> Delete</button>
     </div>
     <hr class="divider"/>
     <div class="section-title">Linked Items (${sponsorItems.length})</div>
@@ -1550,12 +1664,13 @@ async function viewSponsor(id) {
       <thead><tr><th>Item</th><th>Variant</th><th>Total Qty</th><th>Current Qty</th><th>Status</th></tr></thead>
       <tbody>${sponsorItems.map(i => {
         const cur = computeStock(i.id);
+        const rec = computeReceived(i.id);
         return `<tr>
           <td><strong>${esc(i.name)}</strong></td>
           <td class="text-muted text-sm">${esc(i.variant||'—')}</td>
           <td class="mono">${i.total_qty||0}</td>
           <td class="mono">${cur}</td>
-          <td>${statusBadge(cur, i.total_qty||0)}</td>
+          <td>${statusBadge(rec, i.total_qty||0)}</td>
         </tr>`;
       }).join('')}</tbody></table></div>` : `<p class="text-muted text-sm" style="margin-bottom:20px">No items linked.</p>`}
     <div class="section-title">Transactions (Total IN: ${totalIn}, Total OUT: ${totalOut})</div>
@@ -1593,8 +1708,8 @@ function viewItem(id) {
       <div class="info-item"><label>Expected Qty</label><p>${item.total_qty||0}</p></div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:20px">
-      <button class="btn btn-ghost btn-sm" onclick="editItem('${item.id}')">✏️ Edit</button>
-      <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteItem('${item.id}','${esc(item.name)}')">🗑️ Delete</button>
+      <button class="btn btn-ghost btn-sm" onclick="editItem('${item.id}')"><i class="fas fa-pen"></i> Edit</button>
+      <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteItem('${item.id}','${esc(item.name)}')"><i class="fas fa-trash"></i> Delete</button>
       <button class="btn btn-primary btn-sm" onclick="openAddTxModal()">+ Log Transaction</button>
     </div>
     <div class="item-stat-row">
@@ -1671,7 +1786,7 @@ async function saveSponsor() {
   else { ({ error } = await db.from('sponsors').insert(payload)); }
   if (error) { toast('Error: ' + error.message, 'error'); return; }
   closeModal('modal-sponsor');
-  toast(editId ? 'Sponsor updated ✅' : 'Sponsor added ✅', 'success');
+  toast(editId ? 'Sponsor updated' : 'Sponsor added', 'success');
   await loadSponsors();
   if (currentPage==='dashboard') loadDashboard();
 }
@@ -1680,10 +1795,10 @@ function deleteSponsor(id, name) {
   confirm2('Delete Sponsor', `Delete "${name}"? This cannot be undone. Items and transactions will not be deleted.`, async () => {
     const { error } = await db.from('sponsors').delete().eq('id', id);
     if (error) { toast('Error: ' + error.message, 'error'); return; }
-    toast('Sponsor deleted 🗑️', 'success');
+    toast('Sponsor deleted', 'success');
     await loadSponsors();
     if (currentPage==='sponsor-detail') navigate('sponsors');
-  }, '🗑️');
+  }, '<i class="fas fa-trash"></i>');
 }
 
 // ── ITEM CRUD ──
@@ -1724,7 +1839,7 @@ function populateItemDropdowns() {
 function openAddItemModal() {
   document.getElementById('item-modal-title').textContent = 'Add Item';
   document.getElementById('item-edit-id').value = '';
-  ['it-name','it-variant','it-category'].forEach(id => document.getElementById(id).value = '');
+  ['it-name','it-variant','it-category','it-unit-value'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('it-qty').value = '';
   document.getElementById('it-sponsor').value = '';
   ['fg-it-name','fg-it-qty'].forEach(id => document.getElementById(id).classList.remove('error'));
@@ -1741,6 +1856,7 @@ function editItem(id) {
   document.getElementById('it-variant').value = item.variant||'';
   document.getElementById('it-category').value = item.category||'';
   document.getElementById('it-qty').value = item.total_qty||0;
+  document.getElementById('it-unit-value').value = item.unit_value||'';
   populateSponsorDropdowns();
   document.getElementById('it-sponsor').value = item.sponsor_id||'';
   openModal('modal-item');
@@ -1762,14 +1878,15 @@ async function saveItem() {
     variant: document.getElementById('it-variant').value.trim()||null,
     category: document.getElementById('it-category').value.trim()||null,
     sponsor_id: sponsorVal||null,
-    total_qty: qty
+    total_qty: qty,
+    unit_value: parseFloat(document.getElementById('it-unit-value').value)||null
   };
   let error;
   if (editId) { ({ error } = await db.from('items').update(payload).eq('id', editId)); }
   else { ({ error } = await db.from('items').insert(payload)); }
   if (error) { toast('Error: ' + error.message, 'error'); return; }
   closeModal('modal-item');
-  toast(editId ? 'Item updated ✅' : 'Item added ✅', 'success');
+  toast(editId ? 'Item updated' : 'Item added', 'success');
   await loadItems();
   await loadTransactions();
   if (currentPage==='dashboard') loadDashboard();
@@ -1779,10 +1896,10 @@ function deleteItem(id, name) {
   confirm2('Delete Item', `Delete "${name}"? All linked transactions will also be deleted.`, async () => {
     const { error } = await db.from('items').delete().eq('id', id);
     if (error) { toast('Error: ' + error.message, 'error'); return; }
-    toast('Item deleted 🗑️', 'success');
+    toast('Item deleted', 'success');
     await loadItems();
     await loadTransactions();
-  }, '🗑️');
+  }, '<i class="fas fa-trash"></i>');
 }
 
 // ── TRANSACTION CRUD ──
@@ -1855,7 +1972,7 @@ async function saveTx() {
   }
   if (error) { toast('Error: ' + error.message, 'error'); return; }
   closeModal('modal-tx');
-  toast(editId ? 'Transaction updated ✅' : 'Transaction logged ✅', 'success');
+  toast(editId ? 'Transaction updated' : 'Transaction logged', 'success');
   await loadTransactions();
   if (currentPage==='dashboard') loadDashboard();
   else if (currentPage==='items') renderItems();
@@ -1872,11 +1989,11 @@ function deleteTx(id) {
   confirm2('Delete Transaction', 'Delete this transaction? Stock will be recalculated.', async () => {
     const { error } = await db.from('transactions').delete().eq('id', id);
     if (error) { toast('Error: ' + error.message, 'error'); return; }
-    toast('Transaction deleted 🗑️', 'success');
+    toast('Transaction deleted', 'success');
     await loadTransactions();
     if (currentPage==='dashboard') loadDashboard();
     else if (currentPage==='items') renderItems();
-  }, '🗑️');
+  }, '<i class="fas fa-trash"></i>');
 }
 
 function clearTxFilters() {
@@ -1888,6 +2005,7 @@ function clearTxFilters() {
 function openProfileModal() {
   if (!currentUser) return;
   document.getElementById('pf-username').value = currentUser.username||'';
+  document.getElementById('pf-name').value = currentUser.name||'';
   document.getElementById('pf-pin').value = '';
   document.getElementById('pf-position').value = currentUser.position||'';
   ['fg-pf-user','fg-pf-pin'].forEach(id => document.getElementById(id).classList.remove('error'));
@@ -1899,6 +2017,7 @@ async function saveProfile() {
   const uname = document.getElementById('pf-username').value.trim();
   const pin = document.getElementById('pf-pin').value.trim();
   const pos = document.getElementById('pf-position').value.trim();
+  const name = document.getElementById('pf-name').value.trim();
   let ok = true;
   ['fg-pf-user','fg-pf-pin'].forEach(id => document.getElementById(id).classList.remove('error'));
   ['err-pf-user','err-pf-pin'].forEach(id => document.getElementById(id).textContent = '');
@@ -1909,14 +2028,14 @@ async function saveProfile() {
     ok = false;
   }
   if (!ok) return;
-  const payload = { username: uname, position: pos||null };
+  const payload = { username: uname, position: pos||null, name: name||null };
   if (pin) payload.pin = pin;
   const { error } = await db.from('users').update(payload).eq('id', currentUser.id);
   if (error) { toast('Error: ' + error.message, 'error'); return; }
   currentUser = { ...currentUser, ...payload };
   updateSidebarUser();
   closeModal('modal-profile');
-  toast('Profile updated ✅', 'success');
+  toast('Profile updated', 'success');
 }
 
 // ── GLOBAL SEARCH ──
